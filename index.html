@@ -37,10 +37,14 @@
         @media (hover: hover) { .nav-btn { display: flex; } }
         .nav-left { left: -14px; } .nav-right { right: -14px; }
         .horizontal-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; margin: 0 -20px; padding: 0 20px; scroll-behavior: smooth; }
-        .creator-card { flex: 0 0 132px; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .avatar { position: relative; width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
+        
+        /* 調整卡片寬度以適應放大的頭像 */
+        .creator-card { flex: 0 0 144px; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        /* 【修改】頭像放大 50%：64px -> 96px */
+        .avatar { position: relative; width: 96px; height: 96px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        .creator-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 108px; }
+        /* 名稱寬度也稍微加寬以適應卡片 */
+        .creator-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 120px; }
         
         .video-grid { display: grid; grid-template-rows: repeat(4, auto); grid-auto-columns: 92%; grid-auto-flow: column; gap: 12px; overflow-x: auto; padding-bottom: 12px; scroll-behavior: smooth; }
         @media (min-width: 500px) { .video-grid { grid-auto-columns: 48%; } }
@@ -68,8 +72,7 @@
         .gold-fill { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
         .purple-fill { background: linear-gradient(135deg, var(--brand-secondary), #5a189a); color: #fff; }
 
-        /* 加入 env(safe-area-inset-bottom) 避免被 iOS 底部橫條擋住 */
-        .cta-wrapper { position: fixed; bottom: 0; left: 0; width: 100%; padding: 10px 20px calc(20px + env(safe-area-inset-bottom)) 20px; background: linear-gradient(to top, #000000 80%, transparent); display: flex; justify-content: center; z-index: 100; transition: padding 0.3s ease; }
+        .cta-wrapper { position: fixed; bottom: 0; left: 0; width: 100%; padding: 10px 20px 24px 20px; background: linear-gradient(to top, #000000 85%, transparent); display: flex; justify-content: center; z-index: 100; transition: padding 0.3s ease; }
         .cta-btn { width: 100%; max-width: 500px; padding: 14px; border-radius: 100px; border: none; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; animation: pulse-glow 2s infinite; }
         
         .btn-full, .cta-btn { position: relative; overflow: hidden; }
@@ -155,15 +158,15 @@
         }
 
         async function init() {
-            // 【修復】：偵測是否在 iframe 內
+            // 【修復】Iframe 暴力推擠解法：不依賴 CSS 環境變數，直接墊高純像素
             if (window.self !== window.top) {
-                // 1. 增加主要容器的滾動空間
-                document.getElementById('main-container').style.paddingBottom = '180px';
+                // 將主要內容的底部滾動空間大幅增加，確保滑到底部時不會被擋住
+                document.getElementById('main-container').style.paddingBottom = '220px';
                 
-                // 2. 增加固定在底部的 CTA 外套 padding，把按鈕本身「往上推」 50px，避開被裁切的死角
                 const ctaWrapper = document.getElementById('cta-wrapper');
                 if (ctaWrapper) {
-                    ctaWrapper.style.paddingBottom = 'calc(60px + env(safe-area-inset-bottom))';
+                    // 放棄 calc()，直接給予 100px 的 padding-bottom，把按鈕強制往上頂出死角
+                    ctaWrapper.style.paddingBottom = '100px'; 
                 }
             }
 
