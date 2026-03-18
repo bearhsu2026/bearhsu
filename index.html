@@ -29,83 +29,49 @@
         .section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; padding: 8px 16px; display: flex; align-items: center; gap: 8px; border-radius: 4px 16px 16px 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
         .title-creators { background: linear-gradient(90deg, rgba(255, 42, 95, 0.4) 0%, rgba(255, 42, 95, 0) 100%); border-left: 5px solid var(--brand-primary); }
         .title-videos { background: linear-gradient(90deg, rgba(42, 134, 255, 0.4) 0%, rgba(42, 134, 255, 0) 100%); border-left: 5px solid #2a86ff; }
+        .title-hot-videos { background: linear-gradient(90deg, rgba(255, 106, 0, 0.4) 0%, rgba(255, 106, 0, 0) 100%); border-left: 5px solid #ff6a00; }
         .title-pack { background: linear-gradient(90deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0) 100%); border-left: 5px solid #ffd700; color: #fff;}
         .title-pass { background: linear-gradient(90deg, rgba(157, 42, 255, 0.4) 0%, rgba(157, 42, 255, 0) 100%); border-left: 5px solid var(--brand-secondary); }
+
+        .title-tag { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; font-style: italic; letter-spacing: 0.5px; margin-left: auto; text-transform: uppercase; }
+        .tag-free { background-color: var(--brand-primary); color: #fff; }
+        .tag-hot { background-color: #ffaa00; color: #000; }
 
         .carousel-wrapper { position: relative; width: 100%; margin-top: 8px; }
         .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.7); color: white; border: 1px solid var(--glass-border); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; z-index: 10; display: none; align-items: center; justify-content: center; }
         @media (hover: hover) { .nav-btn { display: flex; } }
         .nav-left { left: -14px; } .nav-right { right: -14px; }
-        .horizontal-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; margin: 0 -20px; padding: 0 20px; scroll-behavior: smooth; }
         
+        .horizontal-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; margin: 0 -20px; padding: 0 20px; scroll-behavior: smooth; }
         .creator-card { flex: 0 0 144px; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; }
         .avatar { position: relative; width: 96px; height: 96px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .creator-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 120px; }
         
-        /* 【修改】Netflix 風格排版：2 列橫滑、1.5 張視覺引導 */
-        .video-grid { 
-            display: grid; 
-            grid-template-rows: repeat(2, auto); /* 固定上下兩排 */
-            grid-auto-columns: 65%; /* 顯示約 1.5 張的寬度，引導用戶往右滑 */
-            grid-auto-flow: column; /* 從上到下再往右長 */
-            gap: 16px 12px; /* 上下間距 16px，左右 12px */
-            overflow-x: auto; 
-            padding-bottom: 12px; 
-            scroll-behavior: smooth; 
-        }
-        @media (min-width: 500px) { .video-grid { grid-auto-columns: 45%; } } /* 電腦/平板版稍微放寬 */
-
-        /* 移除毛玻璃背景，改以上圖下文的簡潔佈局 */
-        .video-item { 
-            background: transparent; 
-            border: none; 
-            padding: 0; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-            cursor: pointer; 
-        }
-        /* 16:9 大封面圖 */
-        .video-cover-container { 
-            position: relative; 
-            width: 100%; 
-            aspect-ratio: 16 / 9; /* 強制設定 16:9 比例 */
-            border-radius: 12px; 
-            overflow: hidden; 
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
+        .video-grid { display: grid; grid-template-rows: repeat(2, auto); grid-auto-columns: 65%; grid-auto-flow: column; gap: 16px 12px; overflow-x: auto; padding-bottom: 12px; scroll-behavior: smooth; margin: 0 -20px; padding-left: 20px; padding-right: 20px; }
+        @media (min-width: 500px) { .video-grid { grid-auto-columns: 45%; } }
+        .video-item { background: transparent; border: none; padding: 0; display: flex; flex-direction: column; gap: 8px; cursor: pointer; }
+        .video-cover-container { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
         .video-cover-container img { width: 100%; height: 100%; object-fit: cover; }
-        .video-duration { 
-            position: absolute; 
-            bottom: 6px; 
-            right: 6px; 
-            background: rgba(0,0,0,0.8); 
-            color: #fff; 
-            font-size: 0.7rem; 
-            padding: 3px 6px; 
-            border-radius: 6px; 
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-        
+        .video-duration { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.8); color: #fff; font-size: 0.7rem; padding: 3px 6px; border-radius: 6px; font-weight: bold; letter-spacing: 0.5px; }
         .video-info { display: flex; flex-direction: column; padding: 0 4px; }
-        .video-title { 
-            font-size: 0.9rem; 
-            font-weight: 700; 
-            line-height: 1.4; 
-            display: -webkit-box; 
-            -webkit-line-clamp: 2; /* 標題最多兩行，超過刪節號 */
-            -webkit-box-orient: vertical; 
-            overflow: hidden; 
-            word-break: break-all; 
-            white-space: normal;
-            color: var(--text-main);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        .video-title { font-size: 0.9rem; font-weight: 700; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-all; white-space: normal; color: var(--text-main); text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+
+        /* 【優化 1】隱藏行動版捲軸，保留桌機版 */
+        @media (max-width: 768px) {
+            .horizontal-scroll::-webkit-scrollbar, .video-grid::-webkit-scrollbar { display: none; }
+            .horizontal-scroll, .video-grid { -ms-overflow-style: none; scrollbar-width: none; }
+        }
+        @media (min-width: 769px) {
+            .horizontal-scroll::-webkit-scrollbar, .video-grid::-webkit-scrollbar { height: 6px; }
+            .horizontal-scroll::-webkit-scrollbar-thumb, .video-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
         }
 
-        .banner-card { padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); backdrop-filter: blur(16px); margin-bottom: 24px; text-align: center; }
+        /* 【優化 2】骨架屏動畫 CSS */
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .skeleton-bg { background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
+
+        .banner-card { padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); backdrop-filter: blur(16px); margin-bottom: 24px; text-align: center; transition: all 0.3s ease; }
         .banner-card.gold { border-color: rgba(255, 215, 0, 0.3); background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(24, 24, 27, 0.8)); }
         .banner-card.purple { border-color: rgba(157, 42, 255, 0.3); background: linear-gradient(135deg, rgba(157, 42, 255, 0.1), rgba(24, 24, 27, 0.8)); }
         .promo-highlight { color: #ffd700; font-size: 1.1rem; font-weight: 900; }
@@ -115,20 +81,25 @@
         .pass-title { color: #ffd700; font-weight: 800; font-size: 1rem; }
         .tag-purple { background: var(--brand-secondary); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 800; }
         
+        .countdown-box { display: inline-block; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; letter-spacing: 0.5px; }
+
         .btn-sm { background: var(--brand-primary); color: #fff; border: none; padding: 6px 12px; border-radius: 100px; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 6px; }
         .btn-full { display: inline-block; padding: 12px 24px; border-radius: 100px; border: none; font-size: 0.95rem; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; min-width: 200px; }
         .gold-fill { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
         .purple-fill { background: linear-gradient(135deg, var(--brand-secondary), #5a189a); color: #fff; }
 
         .cta-wrapper { position: fixed; bottom: 0; left: 0; width: 100%; padding: 10px 20px 24px 20px; background: linear-gradient(to top, #000000 85%, transparent); display: flex; justify-content: center; z-index: 100; transition: padding 0.3s ease; }
-        .cta-btn { width: 100%; max-width: 500px; padding: 14px; border-radius: 100px; border: none; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; animation: pulse-glow 2s infinite; }
+        
+        /* 【優化 4】CTA 增加 Pulse 縮放特效 */
+        @keyframes bounce-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        .cta-btn { width: 100%; max-width: 500px; padding: 14px; border-radius: 100px; border: none; background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; animation: bounce-pulse 2.5s infinite ease-in-out; }
         
         .btn-full, .cta-btn { position: relative; overflow: hidden; }
         .scroll-glow::after {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: linear-gradient(to right, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 60%);
             transform: rotate(20deg);
-            animation: scroll-shine 2s infinite ease-out;
+            animation: scroll-shine 2.5s infinite ease-out;
         }
         @keyframes scroll-shine { from { left: -75%; } to { left: 100%; } }
     </style>
@@ -147,29 +118,52 @@
             <h1 class="hero-title" data-i18n="title"></h1>
             <p class="hero-subtitle" data-i18n="subtitle"></p>
 
-            <div class="section-title title-creators" data-i18n="sec1_title"></div>
-            <div class="carousel-wrapper">
-                <button class="nav-btn nav-left" onclick="scrollCarousel('creator-list', -1)">&#10094;</button>
-                <div class="horizontal-scroll" id="creator-list"></div>
-                <button class="nav-btn nav-right" onclick="scrollCarousel('creator-list', 1)">&#10095;</button>
+            <div id="section-creator">
+                <div class="section-title title-creators" data-i18n="sec1_title"></div>
+                <div class="carousel-wrapper">
+                    <button class="nav-btn nav-left" onclick="scrollCarousel('creator-list', -1)">&#10094;</button>
+                    <div class="horizontal-scroll" id="creator-list"></div>
+                    <button class="nav-btn nav-right" onclick="scrollCarousel('creator-list', 1)">&#10095;</button>
+                </div>
+                <div class="section-divider"></div>
             </div>
 
-            <div class="section-divider"></div>
-
-            <div class="section-title title-videos" data-i18n="sec2_title"></div>
-            <div class="carousel-wrapper">
-                <button class="nav-btn nav-left" onclick="scrollCarousel('video-list', -1)">&#10094;</button>
-                <div class="video-grid" id="video-list"></div>
-                <button class="nav-btn nav-right" onclick="scrollCarousel('video-list', 1)">&#10095;</button>
+            <div id="section-free-videos">
+                <div class="section-title title-videos">
+                    <span data-i18n="sec2_title"></span>
+                    <span class="title-tag tag-free">FREE</span>
+                </div>
+                <div class="carousel-wrapper">
+                    <button class="nav-btn nav-left" onclick="scrollCarousel('video-list', -1)">&#10094;</button>
+                    <div class="video-grid" id="video-list"></div>
+                    <button class="nav-btn nav-right" onclick="scrollCarousel('video-list', 1)">&#10095;</button>
+                </div>
+                <div class="section-divider"></div>
             </div>
 
-            <div class="section-divider"></div>
+            <div id="section-hot-videos">
+                <div class="section-title title-hot-videos">
+                    <span data-i18n="sec5_title"></span>
+                    <span class="title-tag tag-hot">HOT</span>
+                </div>
+                <div class="carousel-wrapper">
+                    <button class="nav-btn nav-left" onclick="scrollCarousel('hot-video-list', -1)">&#10094;</button>
+                    <div class="video-grid" id="hot-video-list"></div>
+                    <button class="nav-btn nav-right" onclick="scrollCarousel('hot-video-list', 1)">&#10095;</button>
+                </div>
+                <div class="section-divider"></div>
+            </div>
 
-            <div class="section-title title-pack" data-i18n="sec3_title"></div>
-            <div class="banner-card gold" data-glow-target="newbie-btn">
-                <p style="margin-bottom: 12px;"><span class="promo-highlight" id="price-tag" data-i18n="sec3_desc"></span><span class="promo-badge">+1200%</span></p>
-                <p class="disclaimer-text" data-i18n="sec3_disclaimer"></p>
-                <a href="https://swag.live/?campaign-id=checkout-diamondpack&campaign=" target="_blank" class="btn-full gold-fill" id="newbie-btn" data-i18n="btn_buy"></a>
+            <div class="section-title title-pack" data-i18n="sec3_title" id="pack-section-title"></div>
+            <div class="banner-card gold" data-glow-target="newbie-btn" id="pack-card">
+                <div id="countdown-box" class="countdown-box" style="display: none;"></div>
+                
+                <p style="margin-bottom: 12px;">
+                    <span class="promo-highlight" id="pack-title" data-i18n="sec3_desc"></span>
+                    <span class="promo-badge" id="pack-badge">+1200%</span>
+                </p>
+                <p class="disclaimer-text" id="pack-desc" data-i18n="sec3_disclaimer"></p>
+                <a href="https://swag.live/?campaign-id=checkout-diamondpack" target="_blank" class="btn-full gold-fill" id="newbie-btn" data-i18n="btn_buy"></a>
             </div>
 
             <div class="section-title title-pass" data-i18n="sec4_title"></div>
@@ -185,16 +179,51 @@
     </div>
 
     <div class="cta-wrapper" id="cta-wrapper" data-glow-target="main-cta-btn">
-        <button class="cta-btn" id="main-cta-btn" data-i18n="main_cta" onclick="handleMainCTAClick()"></button>
+        <button class="cta-btn scroll-glow" id="main-cta-btn" data-i18n="main_cta" onclick="handleMainCTAClick()"></button>
     </div>
 
     <script>
+        // 多語系字典更新
         const T = {
-            'zh-TW': { title: '第一次玩 SWAG 就上手', subtitle: '簡單 4 步驟，立刻開啟你的專屬探索之旅。', sec1_title: '🔥 追蹤人氣女神', hot_tag: '🔥熱播', btn_follow: '立即追蹤', sec2_title: '🎬 熱門影片推薦', sec3_title: '💎 新手限定禮包', sec3_desc: '限量 $29 新手鑽石包，超高 CP 值！', sec3_disclaimer: '新用戶專屬福利，僅限註冊後 7 天內搶購！每項商品限購 1 次', btn_buy: '立即搶購', sec4_title: '🎟️ Battle Pass', tag_free: '免費參加', sec4_h1: '天天刷任務⚔️也能解鎖老司機好康', sec4_desc: '每天完成任務賺星星⭐提升等級就能解鎖專屬獎勵', btn_details: '立即解任務', main_cta: '天天領免費鑽石💎' },
-            'zh-CN': { title: '第一次玩 SWAG 就上手', subtitle: '简单 4 步骤，立刻开启你的专属探索之旅。', sec1_title: '🔥 追踪人气女神', hot_tag: '🔥热播', btn_follow: '立即追踪', sec2_title: '🎬 热门影片推荐', sec3_title: '💎 新手限定礼包', sec3_desc: '限量 9.9 元 新手钻石包，超高 CP 值！', sec3_disclaimer: '新用户专属福利，仅限注册后 7 天内抢购！每项商品限购 1 次', btn_buy: '立即抢购', sec4_title: '🎟️ Battle Pass', tag_free: '免费参加', sec4_h1: '天天刷任务⚔️也能解锁老司机好康', sec4_desc: '每天完成任务赚星星⭐提升等级就能解锁专属奖励', btn_details: '立即解任务', main_cta: '天天领免费钻石💎' },
-            'en': { title: 'Get Started with SWAG', subtitle: 'Follow 4 simple steps to start your exclusive journey.', sec1_title: '🔥 Top Creators', hot_tag: '🔥HOT', btn_follow: 'Follow', sec2_title: '🎬 Hot Videos', sec3_title: '💎 Newbie Pack', sec3_desc: 'Limited $29 Diamond Pack.', sec3_disclaimer: 'New user exclusive! Available for 7 days after registration. Limit 1 per item.', btn_buy: 'Buy Now', sec4_title: '🎟️ Battle Pass', tag_free: 'Free to Join', sec4_h1: 'Daily tasks⚔️ to unlock perks', sec4_desc: 'Complete daily tasks to earn stars⭐ and unlock rewards', btn_details: 'Start Tasks', main_cta: 'Claim Daily Diamonds💎' },
-            'ja': { title: 'SWAGの始め方ガイド', subtitle: '簡単な4ステップで、あなただけの特別な体験を始めましょう。', sec1_title: '🔥 人気女神をフォロー', hot_tag: '🔥人気配信', btn_follow: 'フォロー', sec2_title: '🎬 おすすめ動画', sec3_title: '💎 初心者限定パック', sec3_desc: '限定$29ダイヤパック。', sec3_disclaimer: '新規ユーザー限定特典。登録後7日以内にご購入ください。各商品1回限り。', btn_buy: '今すぐ購入', sec4_title: '🎟️ バトルパス', tag_free: '無料参加', sec4_h1: '任務をこなして⚔️報酬を解除', sec4_desc: '毎日ミッションで星⭐をゲット！レベルアップして報酬を解除しよう', btn_details: '今すぐ解任務', main_cta: '毎日無料ダイヤを受け取る💎' }
+            'zh-TW': { 
+                title: '第一次玩 SWAG 就上手', subtitle: '快速通關秘笈大公開，馬上晉升懂玩老手！', 
+                sec1_title: '🔥 追蹤人氣女神', btn_follow: '立即追蹤', 
+                sec2_title: '🎬 免費熱播大片', sec5_title: '🏆 熱銷解鎖榜單',
+                sec3_title: '💎 新手限定禮包', sec3_desc: '限量 $29 新手鑽石包，超高 CP 值！', sec3_disclaimer: '新用戶專屬福利，僅限註冊後 7 天內搶購！每項商品限購 1 次', btn_buy: '立即搶購', 
+                sec4_title: '🎟️ Battle Pass', tag_free: '免費參加', sec4_h1: '天天刷任務⚔️也能解鎖老司機好康', sec4_desc: '每天完成任務賺星星⭐提升等級就能解鎖專屬獎勵', btn_details: '立即解任務', main_cta: '天天領免費鑽石💎',
+                time_left: '⏳ 剩餘 ', time_d: ' 天 ',
+                pack_exp_title: '限量閃購！日/週/月超值購', pack_exp_badge: 'up to 8% off', pack_exp_desc: '【會員限定好康】每日限購商品每日 8:00AM (GMT+8) 更新，每週限購商品每週一 8:00AM (GMT+8) 更新，每月限購商品每月 1 號 8:00AM (GMT+8) 更新。', pack_exp_btn: '前往補鑽'
+            },
+            'zh-CN': { 
+                title: '第一次玩 SWAG 就上手', subtitle: '快速通关秘笈大公开，马上晋升懂玩老手！', 
+                sec1_title: '🔥 追踪人气女神', btn_follow: '立即追踪', 
+                sec2_title: '🎬 免费热播大片', sec5_title: '🏆 热销解锁榜单',
+                sec3_title: '💎 新手限定礼包', sec3_desc: '限量 9.9 元 新手钻石包，超高 CP 值！', sec3_disclaimer: '新用户专属福利，仅限注册后 7 天内抢购！每项商品限购 1 次', btn_buy: '立即抢购', 
+                sec4_title: '🎟️ Battle Pass', tag_free: '免费参加', sec4_h1: '天天刷任务⚔️也能解锁老司机好康', sec4_desc: '每天完成任务赚星星⭐提升等级就能解锁专属奖励', btn_details: '立即解任务', main_cta: '天天领免费钻石💎',
+                time_left: '⏳ 剩余 ', time_d: ' 天 ',
+                pack_exp_title: '限量闪购！日/周/月超值购', pack_exp_badge: 'up to 8% off', pack_exp_desc: '【会员限定好康】每日限购商品每日 8:00AM (GMT+8) 更新，每周限购商品每周一 8:00AM (GMT+8) 更新，每月限购商品每月 1 号 8:00AM (GMT+8) 更新。', pack_exp_btn: '前往补钻'
+            },
+            'en': { 
+                title: 'Get Started with SWAG', subtitle: 'Fast track to become a pro explorer!', 
+                sec1_title: '🔥 Top Creators', btn_follow: 'Follow', 
+                sec2_title: '🎬 Free Hot Videos', sec5_title: '🏆 Top Unlocked Videos',
+                sec3_title: '💎 Newbie Pack', sec3_desc: 'Limited $29 Diamond Pack.', sec3_disclaimer: 'New user exclusive! Available for 7 days after registration.', btn_buy: 'Buy Now', 
+                sec4_title: '🎟️ Battle Pass', tag_free: 'Free to Join', sec4_h1: 'Daily tasks⚔️ to unlock perks', sec4_desc: 'Complete daily tasks to earn stars⭐ and unlock rewards', btn_details: 'Start Tasks', main_cta: 'Claim Daily Diamonds💎',
+                time_left: '⏳ Ends in ', time_d: 'd ',
+                pack_exp_title: 'Flash Sale! Value Packs', pack_exp_badge: 'up to 8% off', pack_exp_desc: 'Members only! Daily packs reset at 8AM, Weekly packs on Mon 8AM, Monthly packs on 1st of month 8AM (GMT+8).', pack_exp_btn: 'Get Diamonds'
+            },
+            'ja': { 
+                title: 'SWAGの始め方ガイド', subtitle: '初心者向けガイド、すぐにプロの仲間入り！', 
+                sec1_title: '🔥 人気女神をフォロー', btn_follow: 'フォロー', 
+                sec2_title: '🎬 無料人気動画', sec5_title: '🏆 人気ロック解除動画',
+                sec3_title: '💎 初心者限定パック', sec3_desc: '限定$29ダイヤパック。', sec3_disclaimer: '新規ユーザー限定特典。登録後7日以内にご購入ください。', btn_buy: '今すぐ購入', 
+                sec4_title: '🎟️ バトルパス', tag_free: '無料参加', sec4_h1: '任務をこなして⚔️報酬を解除', sec4_desc: '毎日ミッションで星⭐をゲット！レベルアップして報酬を解除しよう', btn_details: '今すぐ解任務', main_cta: '毎日無料ダイヤを受け取る💎',
+                time_left: '⏳ 残り ', time_d: '日 ',
+                pack_exp_title: '限定フラッシュセール！', pack_exp_badge: '最大8%オフ', pack_exp_desc: '会員限定！日替わり商品は毎日8時、週替わりは毎週月曜8時、月替わりは毎月1日8時に更新されます(GMT+8)。', pack_exp_btn: 'ダイヤを購入'
+            }
         };
+
+        let countdownInterval;
 
         function changeLanguage(lang) {
             const t = T[lang] || T['zh-TW'];
@@ -202,57 +231,158 @@
                 const key = el.getAttribute('data-i18n');
                 if (t[key]) el.textContent = t[key];
             });
-            if(lang === 'zh-CN') document.getElementById('price-tag').textContent = '限量 9.9 元 新手钻石包，超高 CP 值！';
+            if(lang === 'zh-CN') {
+                const isExpired = document.getElementById('pack-badge').innerText === 'up to 8% off';
+                if(!isExpired) document.getElementById('pack-title').textContent = '限量 9.9 元 新手钻石包，超高 CP 值！';
+            }
+        }
+
+        // 產生骨架屏
+        function renderSkeletons(containerId, type, count) {
+            const c = document.getElementById(containerId);
+            c.innerHTML = '';
+            for(let i=0; i<count; i++) {
+                if(type === 'creator') {
+                    c.innerHTML += `<div class="creator-card"><div class="avatar skeleton-bg"></div><div class="creator-name skeleton-bg" style="height:14px; width:80%;"></div></div>`;
+                } else {
+                    c.innerHTML += `<div class="video-item"><div class="video-cover-container skeleton-bg"></div><div class="video-info"><div class="video-title skeleton-bg" style="height:14px; width:90%; margin-top:4px;"></div><div class="video-title skeleton-bg" style="height:14px; width:60%; margin-top:4px;"></div></div></div>`;
+                }
+            }
+        }
+
+        // 倒數計時器邏輯
+        function startCountdown(seconds) {
+            const box = document.getElementById('countdown-box');
+            box.style.display = 'inline-block';
+            
+            countdownInterval = setInterval(() => {
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    renderExpiredPack();
+                    return;
+                }
+                const d = Math.floor(seconds / (3600*24));
+                const h = Math.floor((seconds % (3600*24)) / 3600);
+                const m = Math.floor((seconds % 3600) / 60);
+                const s = Math.floor(seconds % 60);
+                
+                const lang = document.getElementById('langSelect').value;
+                const t = T[lang] || T['zh-TW'];
+                box.innerHTML = `${t.time_left}${String(d).padStart(2,'0')}${t.time_d}${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                seconds--;
+            }, 1000);
+        }
+
+        // 渲染逾期/常態商品區塊
+        function renderExpiredPack() {
+            const lang = document.getElementById('langSelect').value;
+            const t = T[lang] || T['zh-TW'];
+            document.getElementById('countdown-box').style.display = 'none';
+            document.getElementById('pack-title').innerHTML = t.pack_exp_title;
+            document.getElementById('pack-title').removeAttribute('data-i18n'); // 解除 i18n 綁定避免切換語言被覆蓋
+            document.getElementById('pack-badge').innerText = t.pack_exp_badge;
+            document.getElementById('pack-desc').innerText = t.pack_exp_desc;
+            document.getElementById('pack-desc').removeAttribute('data-i18n');
+            document.getElementById('newbie-btn').innerText = t.pack_exp_btn;
+            document.getElementById('newbie-btn').removeAttribute('data-i18n');
         }
 
         async function init() {
             if (window.self !== window.top) {
                 document.getElementById('main-container').style.paddingBottom = '220px';
                 const ctaWrapper = document.getElementById('cta-wrapper');
-                if (ctaWrapper) {
-                    ctaWrapper.style.paddingBottom = '100px'; 
-                }
+                if (ctaWrapper) ctaWrapper.style.paddingBottom = '100px'; 
             }
 
+            // 1. 初始化骨架屏
+            renderSkeletons('creator-list', 'creator', 6);
+            renderSkeletons('video-list', 'video', 6);
+            renderSkeletons('hot-video-list', 'video', 6); // 熱銷區塊
+
+            // 2. 抓取創作者 API (含錯誤處理)
             try {
                 const res = await fetch('https://api.swag.live/feeds/user_leaderboard_livestream_24h_a?limit=10&no-redirect=1&format=user');
                 const list = (await res.json()).slice(0, 10);
                 const container = document.getElementById('creator-list');
+                container.innerHTML = '';
                 list.forEach(u => {
                     const card = document.createElement('div');
                     card.className = 'creator-card';
-                    card.innerHTML = `<div class="avatar"><img src="https://public.swag.live/users/${u.id}/picture.jpg?size=256x256&format=avif"></div>
+                    card.innerHTML = `<div class="avatar"><img src="https://public.swag.live/users/${u.id}/picture.jpg?size=256x256&format=avif" loading="lazy"></div>
                                       <div class="creator-name">${u.displayName || u.username}</div>
-                                      <a href="https://swag.live/user/${u.id}" target="_blank" class="btn-sm" data-i18n="btn_follow"></a>`;
+                                      <a href="https://swag.live/user/${u.id}" target="_blank" class="btn-sm" data-i18n="btn_follow">立即追蹤</a>`;
                     container.appendChild(card);
                 });
-            } catch(e) {}
+            } catch(e) {
+                document.getElementById('section-creator').style.display = 'none';
+            }
             
+            // 3. 抓取免費推薦 API (含錯誤處理)
             try {
                 const res = await fetch('https://api.swag.live/feeds/flix_trending_free_video?page=1&limit=12');
                 const list = (await res.json()).slice(0, 12);
                 const container = document.getElementById('video-list');
+                container.innerHTML = '';
                 list.forEach(v => {
                     const card = document.createElement('div');
                     card.className = 'video-item';
                     const dur = v.metadata?.duration || v.assets?.[0]?.duration || 0;
-                    
-                    let displayCaption = v.caption || "";
-                    displayCaption = displayCaption.replace(/\{user_id\}/g, '').replace(/\{username\}/g, '').trim();
+                    let displayCaption = v.caption ? v.caption.replace(/\{user_id\}/g, '').replace(/\{username\}/g, '').trim() : "";
 
-                    // 【修改】移除 creator-dot，並調整結構以符合 Netflix 樣式（改抓 512x512 更清晰的大圖）
                     card.innerHTML = `<a href="https://swag.live/post/${v.id}" target="_blank" style="display:contents; color:inherit; text-decoration:none;">
                                       <div class="video-cover-container">
-                                          <img src="https://public.swag.live/messages/${v.id}/poster.jpg?size=512x512&format=avif&preset=sd">
+                                          <img src="https://public.swag.live/messages/${v.id}/poster.jpg?size=512x512&format=avif&preset=sd" loading="lazy">
                                           <div class="video-duration">${Math.floor(dur/60)}:${(dur%60).toString().padStart(2,'0')}</div>
                                       </div>
-                                      <div class="video-info">
-                                          <div class="video-title">${displayCaption}</div>
-                                      </div>
+                                      <div class="video-info"><div class="video-title">${displayCaption}</div></div>
                                       </a>`;
                     container.appendChild(card);
                 });
-            } catch(e) {}
+            } catch(e) {
+                document.getElementById('section-free-videos').style.display = 'none';
+            }
+
+            // 4. 熱銷解鎖榜單 (TODO: 等待正式 API，目前暫用相同的免費 API 來示範排版)
+            try {
+                const res = await fetch('https://api.swag.live/feeds/flix_trending_free_video?page=2&limit=12'); // 故意換一頁產生不同資料
+                const list = (await res.json()).slice(0, 12);
+                const container = document.getElementById('hot-video-list');
+                container.innerHTML = '';
+                list.forEach(v => {
+                    const card = document.createElement('div');
+                    card.className = 'video-item';
+                    const dur = v.metadata?.duration || v.assets?.[0]?.duration || 0;
+                    let displayCaption = v.caption ? v.caption.replace(/\{user_id\}/g, '').replace(/\{username\}/g, '').trim() : "";
+
+                    card.innerHTML = `<a href="https://swag.live/post/${v.id}" target="_blank" style="display:contents; color:inherit; text-decoration:none;">
+                                      <div class="video-cover-container">
+                                          <img src="https://public.swag.live/messages/${v.id}/poster.jpg?size=512x512&format=avif&preset=sd" loading="lazy">
+                                          <div class="video-duration">${Math.floor(dur/60)}:${(dur%60).toString().padStart(2,'0')}</div>
+                                      </div>
+                                      <div class="video-info"><div class="video-title">${displayCaption}</div></div>
+                                      </a>`;
+                    container.appendChild(card);
+                });
+            } catch(e) {
+                document.getElementById('section-hot-videos').style.display = 'none';
+            }
+
+            // 5. 抓取倒數計時 API
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('user_id') || '6979f1f4cb646f8c1e121487'; // 若網址無參數則使用預設值
+            try {
+                const timeRes = await fetch(`https://fomo-user-api-905468082258.asia-east1.run.app/api/v1/user_data?user_id=${userId}`);
+                const timeData = await timeRes.json();
+                
+                if (timeData.exists && timeData.remaining_total_seconds > 0) {
+                    startCountdown(timeData.remaining_total_seconds);
+                } else {
+                    renderExpiredPack(); // <= 0 顯示過期樣式
+                }
+            } catch(e) {
+                renderExpiredPack(); // 發生錯誤直接切成常態商品
+            }
+
             changeLanguage(document.getElementById('langSelect').value);
         }
 
@@ -281,6 +411,7 @@
                 } catch(err){}
             }
         });
+
         function scrollCarousel(id, dir) { const el = document.getElementById(id); el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: 'smooth' }); }
         
         function handleMainCTAClick() {
@@ -288,6 +419,7 @@
             if (window.self !== window.top) window.parent.postMessage({ type: 'PWA_NAVIGATE', url: url }, '*');
             else window.location.href = url;
         }
+        
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
