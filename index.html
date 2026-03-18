@@ -28,7 +28,7 @@
         .hero-subtitle { font-size: 1rem; color: var(--text-muted); margin-bottom: 24px; }
         .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); margin: 36px 0 12px 0; }
         
-        .section-title { margin-bottom: 16px; padding: 10px 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; border-radius: 4px 16px 16px 4px; }
+        .section-title { margin-bottom: 16px; padding: 10px 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; border-radius: 4px 16px 16px 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
         .title-header { display: flex; align-items: center; gap: 8px; width: 100%; font-size: 1.1rem; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
         .section-desc { font-size: 0.8rem; color: rgba(255,255,255,0.8); margin: 0; line-height: 1.35; font-weight: 500; letter-spacing: 0.3px; text-shadow: none; }
 
@@ -38,7 +38,6 @@
         .title-pack { background: linear-gradient(90deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0) 100%); border-left: 5px solid #ffd700; color: #fff;}
         .title-pass { background: linear-gradient(90deg, rgba(157, 42, 255, 0.4) 0%, rgba(157, 42, 255, 0) 100%); border-left: 5px solid var(--brand-secondary); }
         
-        /* 新增：鑽石說明區塊的主題色 (水藍色) */
         .title-diamond-info { background: linear-gradient(90deg, rgba(0, 210, 255, 0.3) 0%, rgba(0, 210, 255, 0) 100%); border-left: 5px solid #00d2ff; }
 
         .title-tag { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; font-style: italic; letter-spacing: 0.5px; margin-left: auto; text-transform: uppercase; }
@@ -65,7 +64,6 @@
         .video-info { display: flex; flex-direction: column; padding: 0 4px; }
         .video-title { font-size: 0.9rem; font-weight: 700; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-all; white-space: normal; color: var(--text-main); text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
-        /* 新增：鑽石說明卡片樣式 (2x2 網格) */
         .diamond-features-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -76,7 +74,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 32px; /* 拉開與下方新手禮包的距離 */
+            margin-bottom: 32px; 
         }
         .feature-item {
             display: flex;
@@ -336,13 +334,13 @@
                 sec5_title: '🏆 熱銷解鎖榜單',
                 sec5_subtitle: '捨不得快轉的極品企劃，立刻解鎖體驗最高級的視覺震撼。',
                 
-                /* 新增：鑽石說明區塊 */
+                /* 修改：移除鑽石說明區塊文字內的 Emoji */
                 sec_info_title: '💎 鑽石能做什麼？',
                 sec_info_subtitle: '站內唯一通用貨幣，帶你解鎖所有大尺度玩法！',
-                feat_1: '🔓 解鎖私密大片',
-                feat_2: '👀 偷看專屬限動',
-                feat_3: '🔥 暢享火熱直播',
-                feat_4: '🎁 送禮打賞女神',
+                feat_1: '解鎖私密大片',
+                feat_2: '偷看專屬限動',
+                feat_3: '暢享火熱直播',
+                feat_4: '送禮打賞女神',
 
                 sec3_title: '💎 新手限定禮包', 
                 sec3_desc: '限量 $29 帶走 💎5880 鑽！', 
@@ -372,13 +370,13 @@
                 sec5_title: '🏆 热销解锁榜单',
                 sec5_subtitle: '舍不得快转的极品企划，立刻解锁体验最高级的视觉震撼。',
                 
-                /* 新增：鑽石說明區塊 */
+                /* 修改：移除鑽石說明區塊文字內的 Emoji */
                 sec_info_title: '💎 钻石能做什么？',
                 sec_info_subtitle: '站内唯一通用货币，带你解锁所有大尺度玩法！',
-                feat_1: '🔓 解锁私密大片',
-                feat_2: '👀 偷看专属限动',
-                feat_3: '🔥 畅享火热直播',
-                feat_4: '🎁 送礼打赏女神',
+                feat_1: '解锁私密大片',
+                feat_2: '偷看专属限动',
+                feat_3: '畅享火热直播',
+                feat_4: '送礼打赏女神',
 
                 sec3_title: '💎 新手限定礼包', 
                 sec3_desc: '限量 $29 带走 💎5880 钻！', 
@@ -408,13 +406,13 @@
                 sec5_title: '🏆 Top Unlocked Videos',
                 sec5_subtitle: 'Premium content you can\'t skip. Unlock now for the ultimate visual thrill.',
                 
-                /* 新增：鑽石說明區塊 */
+                /* 修改：移除鑽石說明區塊文字內的 Emoji */
                 sec_info_title: '💎 What are Diamonds for?',
                 sec_info_subtitle: 'The universal currency to unlock all premium content!',
-                feat_1: '🔓 Unlock Videos',
-                feat_2: '👀 View Private Stories',
-                feat_3: '🔥 Watch Premium Live',
-                feat_4: '🎁 Send Gifts & Tips',
+                feat_1: 'Unlock Videos',
+                feat_2: 'View Private Stories',
+                feat_3: 'Watch Premium Live',
+                feat_4: 'Send Gifts & Tips',
 
                 sec3_title: '💎 Newbie Pack', 
                 sec3_desc: 'Limited $29 Pack! Get 💎5880 Diamonds!', 
@@ -444,13 +442,13 @@
                 sec5_title: '🏆 人気ロック解除動画',
                 sec5_subtitle: 'スキップできない極上企画。今すぐロック解除して最高の視覚体験を。',
                 
-                /* 新增：鑽石說明區塊 */
+                /* 修改：移除鑽石說明區塊文字內的 Emoji */
                 sec_info_title: '💎 ダイヤの使い道は？',
                 sec_info_subtitle: '共通通貨で、すべてのプレミアムコンテンツを解放！',
-                feat_1: '🔓 プレミアム動画解放',
-                feat_2: '👀 限定ストーリー閲覧',
-                feat_3: '🔥 ライブ配信の視聴',
-                feat_4: '🎁 ギフト・投げ銭',
+                feat_1: 'プレミアム動画解放',
+                feat_2: '限定ストーリー閲覧',
+                feat_3: 'ライブ配信の視聴',
+                feat_4: 'ギフト・投げ銭',
 
                 sec3_title: '💎 初心者限定パック', 
                 sec3_desc: '限定$29パック！💎5880ダイヤをゲット！', 
