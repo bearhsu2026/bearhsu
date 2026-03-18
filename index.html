@@ -21,7 +21,6 @@
 
         .container { position: relative; padding: 24px 20px 100px 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* 【優化 1】將主標題與語言切換器整合為同行對齊 */
         .hero-header-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; }
         .hero-title { font-size: 1.5rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, #fff, var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .lang-switcher { appearance: none; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); color: var(--text-main); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; outline: none; flex-shrink: 0; }
@@ -29,7 +28,6 @@
         .hero-subtitle { font-size: 1rem; color: var(--text-muted); margin-bottom: 24px; }
         .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); margin: 36px 0 12px 0; }
         
-        /* 【優化 2】區塊標題與微文案樣式整合 */
         .section-title { margin-bottom: 16px; padding: 10px 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; border-radius: 4px 16px 16px 4px; }
         .title-header { display: flex; align-items: center; gap: 8px; width: 100%; font-size: 1.1rem; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
         .section-desc { font-size: 0.8rem; color: rgba(255,255,255,0.8); margin: 0; line-height: 1.35; font-weight: 500; letter-spacing: 0.3px; text-shadow: none; }
@@ -75,6 +73,12 @@
 
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         .skeleton-bg { background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
+
+        /* 【新增】鑽石用途網格 CSS */
+        .diamond-features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 24px; }
+        .feature-card { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px 10px; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(8px); }
+        .feature-icon { font-size: 1.4rem; display: flex; align-items: center; justify-content: center; width: 28px; }
+        .feature-text { font-size: 0.85rem; font-weight: 700; color: var(--text-main); line-height: 1.3; }
 
         .banner-card { padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); backdrop-filter: blur(16px); margin-bottom: 24px; text-align: center; transition: all 0.5s ease; }
         .banner-card.gold { border-color: rgba(255, 215, 0, 0.3); background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(24, 24, 27, 0.8)); }
@@ -221,9 +225,31 @@
                 <div class="section-divider"></div>
             </div>
 
-            <div class="section-title title-pack">
-                <div class="title-header" data-i18n="sec3_title" id="pack-section-title"></div>
+            <div id="section-diamond-info">
+                <div class="section-title title-pack">
+                    <div class="title-header" data-i18n="sec_dia_title"></div>
+                    <div class="section-desc" data-i18n="sec_dia_subtitle"></div>
+                </div>
+                <div class="diamond-features-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">📸</span>
+                        <span class="feature-text" data-i18n="feat_story"></span>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🎥</span>
+                        <span class="feature-text" data-i18n="feat_live"></span>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🎁</span>
+                        <span class="feature-text" data-i18n="feat_gift"></span>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🔓</span>
+                        <span class="feature-text" data-i18n="feat_video"></span>
+                    </div>
+                </div>
             </div>
+
             <div class="banner-card gold" data-glow-target="newbie-btn" id="pack-card">
                 <div id="countdown-box" class="countdown-box" style="display: none;"></div>
                 
@@ -237,6 +263,8 @@
                 
                 <a href="https://swag.live/?campaign-id=checkout-diamondpack" target="_blank" class="btn-full gold-fill" id="newbie-btn" data-i18n="btn_buy"></a>
             </div>
+            
+            <div class="section-divider"></div>
 
             <div class="section-title title-pass">
                 <div class="title-header" data-i18n="sec4_title"></div>
@@ -258,7 +286,6 @@
     </div>
 
     <script>
-        // 【優化 3】更新了 5880 鑽石文案與防斷行說明文字
         const T = {
             'zh-TW': { 
                 title: '第一次玩 SWAG 就上手', subtitle: '快速通關秘笈大公開，馬上晉升懂玩老手！', 
@@ -273,6 +300,13 @@
                 sec5_title: '🏆 熱銷解鎖榜單',
                 sec5_subtitle: '捨不得快轉的極品企劃，立刻解鎖體驗最高級的視覺震撼。',
                 
+                sec_dia_title: '💎 鑽石能做什麼？',
+                sec_dia_subtitle: '站內專屬貨幣，讓你暢通無阻體驗所有老司機福利。',
+                feat_story: '解鎖限時動態',
+                feat_live: '觀看私密直播',
+                feat_gift: '抖內打賞女神',
+                feat_video: '解鎖付費大片',
+
                 sec3_title: '💎 新手限定禮包', 
                 sec3_desc: '限量 $29 帶走 💎5880 鑽！', 
                 sec3_disclaimer: '新用戶專屬福利，僅限註冊後 1 天內搶購！別錯過', 
@@ -301,6 +335,13 @@
                 sec5_title: '🏆 热销解锁榜单',
                 sec5_subtitle: '舍不得快转的极品企划，立刻解锁体验最高级的视觉震撼。',
                 
+                sec_dia_title: '💎 钻石能做什么？',
+                sec_dia_subtitle: '站内专属货币，让你畅通无阻体验所有老司机福利。',
+                feat_story: '解锁限时动态',
+                feat_live: '观看私密直播',
+                feat_gift: '打赏心仪女神',
+                feat_video: '解锁付费大片',
+
                 sec3_title: '💎 新手限定礼包', 
                 sec3_desc: '限量 $29 带走 💎5880 钻！', 
                 sec3_disclaimer: '新用户专属福利，仅限注册后 1 天内抢购！别错过', 
@@ -329,6 +370,13 @@
                 sec5_title: '🏆 Top Unlocked Videos',
                 sec5_subtitle: 'Premium content you can\'t skip. Unlock now for the ultimate visual thrill.',
                 
+                sec_dia_title: '💎 What are Diamonds?',
+                sec_dia_subtitle: 'The exclusive platform currency to unlock all premium perks.',
+                feat_story: 'View Stories',
+                feat_live: 'Watch Live Streams',
+                feat_gift: 'Send Gifts',
+                feat_video: 'Unlock Premium Videos',
+
                 sec3_title: '💎 Newbie Pack', 
                 sec3_desc: 'Limited $29 Pack! Get 💎5880 Diamonds!', 
                 sec3_disclaimer: 'New user exclusive! Available for 1 day after registration. Don\'t miss out!', 
@@ -357,6 +405,13 @@
                 sec5_title: '🏆 人気ロック解除動画',
                 sec5_subtitle: 'スキップできない極上企画。今すぐロック解除して最高の視覚体験を。',
                 
+                sec_dia_title: '💎 ダイヤの使い道は？',
+                sec_dia_subtitle: 'プラットフォーム専用通貨で、すべての限定コンテンツを体験。',
+                feat_story: 'ストーリーを見る',
+                feat_live: 'ライブ配信を視聴',
+                feat_gift: 'ギフトを贈る',
+                feat_video: '有料動画を解禁',
+
                 sec3_title: '💎 初心者限定パック', 
                 sec3_desc: '限定$29パック！💎5880ダイヤをゲット！', 
                 sec3_disclaimer: '新規限定特典。登録後1日以内にご購入ください！お見逃しなく', 
@@ -434,6 +489,7 @@
             document.getElementById('pack-warning').style.display = 'none'; 
             document.getElementById('pack-card').classList.remove('panic-mode'); 
             
+            // 此處隱藏 "鑽石能做什麼？" 標題，因為 expired 狀態的排版
             document.getElementById('pack-section-title').setAttribute('data-i18n', 'sec3_title_exp');
             document.getElementById('pack-title').setAttribute('data-i18n', 'pack_exp_title');
             document.getElementById('pack-badge').setAttribute('data-i18n', 'pack_exp_badge');
@@ -454,7 +510,6 @@
             renderSkeletons('video-list', 'video', 6);
             renderSkeletons('hot-video-list', 'video', 6); 
 
-            // 1. 抓取人氣女神
             try {
                 const res = await fetch('https://api.swag.live/feeds/user_leaderboard_livestream_24h_a?limit=10&no-redirect=1&format=user');
                 const list = (await res.json()).slice(0, 10);
@@ -472,7 +527,6 @@
                 document.getElementById('section-creator').style.display = 'none';
             }
             
-            // 2. 抓取免費熱播大片 API 
             try {
                 const res = await fetch('https://api.swag.live/feeds/flix_trending_free_popular?page=1&limit=30');
                 const listData = await res.json();
@@ -499,7 +553,6 @@
                 document.getElementById('section-free-videos').style.display = 'none';
             }
 
-            // 3. 抓取熱銷解鎖榜單
             try {
                 const res = await fetch('https://api.swag.live/feeds/flix_trending_paid_popular?page=1&limit=30'); 
                 const listData = await res.json();
@@ -526,7 +579,6 @@
                 document.getElementById('section-hot-videos').style.display = 'none';
             }
 
-            // 4. 抓取用戶註冊時間與倒數
             const urlParams = new URLSearchParams(window.location.search);
             const userId = urlParams.get('user_id') || '693d121965e1e17a7f081d74'; 
             let mockRemainingSeconds = null;
