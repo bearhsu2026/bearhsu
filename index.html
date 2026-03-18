@@ -69,7 +69,7 @@
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         .skeleton-bg { background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
 
-        .banner-card { padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); backdrop-filter: blur(16px); margin-bottom: 24px; text-align: center; transition: all 0.3s ease; }
+        .banner-card { padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); backdrop-filter: blur(16px); margin-bottom: 24px; text-align: center; transition: all 0.5s ease; }
         .banner-card.gold { border-color: rgba(255, 215, 0, 0.3); background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(24, 24, 27, 0.8)); }
         .banner-card.purple { border-color: rgba(157, 42, 255, 0.3); background: linear-gradient(135deg, rgba(157, 42, 255, 0.1), rgba(24, 24, 27, 0.8)); }
         .promo-highlight { color: #ffd700; font-size: 1.1rem; font-weight: 900; }
@@ -79,10 +79,10 @@
         .pass-title { color: #ffd700; font-weight: 800; font-size: 1rem; }
         .tag-purple { background: var(--brand-secondary); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 800; }
         
-        /* 【新增】 FOMO 特效 CSS */
+        /* 倒數計時與 FOMO 基礎特效 */
         .countdown-box { 
             display: inline-block; 
-            background: rgba(255, 42, 95, 0.15); /* 微微透紅，增加急迫感 */
+            background: rgba(255, 42, 95, 0.15); 
             border: 1px solid var(--brand-primary); 
             color: #fff; 
             padding: 8px 16px; 
@@ -91,7 +91,7 @@
             font-weight: bold; 
             margin-bottom: 16px; 
             letter-spacing: 0.5px;
-            animation: fomo-border-pulse 1.5s infinite ease-in-out; /* 邊框呼吸燈 */
+            animation: fomo-border-pulse 1.5s infinite ease-in-out; 
         }
         .fomo-num {
             color: #ffd700;
@@ -99,19 +99,47 @@
             margin: 0 3px;
             text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
             display: inline-block;
-            animation: fomo-text-pulse 1s infinite alternate; /* 數字心跳放大 */
+            animation: fomo-text-pulse 1s infinite alternate; 
         }
+        
+        /* 【新增】損失規避微文案 (Idea 3) */
+        .fomo-warning {
+            font-size: 0.8rem;
+            color: #ff2a5f;
+            margin-bottom: 10px;
+            font-weight: 800;
+            animation: fomo-text-pulse 1.5s infinite alternate;
+        }
+
+        /* 【新增】最後一小時 Panic Mode (Idea 4) */
+        .banner-card.gold.panic-mode {
+            border-color: rgba(255, 42, 95, 0.6);
+            background: linear-gradient(135deg, rgba(255, 42, 95, 0.15), rgba(24, 24, 27, 0.95));
+            box-shadow: 0 0 20px rgba(255, 42, 95, 0.2);
+        }
+        .banner-card.gold.panic-mode #newbie-btn {
+            background: linear-gradient(135deg, #ff2a5f, #aa0022);
+            color: white;
+            animation: shake-panic 2s infinite ease-in-out;
+            box-shadow: 0 0 15px rgba(255, 42, 95, 0.5);
+        }
+
         @keyframes fomo-border-pulse {
             0%, 100% { box-shadow: 0 0 5px rgba(255, 42, 95, 0.3); border-color: rgba(255, 42, 95, 0.5); }
             50% { box-shadow: 0 0 18px rgba(255, 42, 95, 0.8); border-color: rgba(255, 42, 95, 1); }
         }
         @keyframes fomo-text-pulse {
             from { transform: scale(1); }
-            to { transform: scale(1.15); color: #fff; text-shadow: 0 0 12px rgba(255, 255, 255, 0.8); }
+            to { transform: scale(1.05); color: #fff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); }
+        }
+        @keyframes shake-panic {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
         }
 
         .btn-sm { background: var(--brand-primary); color: #fff; border: none; padding: 6px 12px; border-radius: 100px; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 6px; }
-        .btn-full { display: inline-block; padding: 12px 24px; border-radius: 100px; border: none; font-size: 0.95rem; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; min-width: 200px; }
+        .btn-full { display: inline-block; padding: 12px 24px; border-radius: 100px; border: none; font-size: 0.95rem; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; min-width: 200px; transition: all 0.3s ease; }
         .gold-fill { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
         .purple-fill { background: linear-gradient(135deg, var(--brand-secondary), #5a189a); color: #fff; }
 
@@ -189,6 +217,9 @@
                     <span class="promo-badge" id="pack-badge">+1200%</span>
                 </p>
                 <p class="disclaimer-text" id="pack-desc" data-i18n="sec3_disclaimer"></p>
+                
+                <p class="fomo-warning" id="pack-warning" data-i18n="sec3_warning" style="display: none;"></p>
+                
                 <a href="https://swag.live/?campaign-id=checkout-diamondpack" target="_blank" class="btn-full gold-fill" id="newbie-btn" data-i18n="btn_buy"></a>
             </div>
 
@@ -209,7 +240,7 @@
     </div>
 
     <script>
-        // 【修改】多語系字典更新：1天搶購、FOMO 文字拆解
+        // 多語系字典更新 (加入微文案 sec3_warning)
         const T = {
             'zh-TW': { 
                 title: '第一次玩 SWAG 就上手', subtitle: '快速通關秘笈大公開，馬上晉升懂玩老手！', 
@@ -217,6 +248,7 @@
                 sec2_title: '🎬 免費熱播大片', sec5_title: '🏆 熱銷解鎖榜單',
                 sec3_title: '💎 新手限定禮包', sec3_desc: '限量 $29 新手鑽石包，超高 CP 值！', 
                 sec3_disclaimer: '新用戶專屬福利，僅限註冊後 1 天內搶購！每項商品限購 1 次', btn_buy: '立即搶購', 
+                sec3_warning: '⚠️ 倒數結束後，專屬 1200% 特權將永久失效',
                 sec4_title: '🎟️ Battle Pass', tag_free: '免費參加', sec4_h1: '天天刷任務⚔️也能解鎖老司機好康', sec4_desc: '每天完成任務賺星星⭐提升等級就能解鎖專屬獎勵', btn_details: '立即解任務', main_cta: '天天領免費鑽石💎',
                 
                 fomo_prefix: '還剩下 ', fomo_h: '時 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購買機會',
@@ -230,6 +262,7 @@
                 sec2_title: '🎬 免费热播大片', sec5_title: '🏆 热销解锁榜单',
                 sec3_title: '💎 新手限定礼包', sec3_desc: '限量 9.9 元 新手钻石包，超高 CP 值！', 
                 sec3_disclaimer: '新用户专属福利，仅限注册后 1 天内抢购！每项商品限购 1 次', btn_buy: '立即抢购', 
+                sec3_warning: '⚠️ 倒数结束后，专属 1200% 特权将永久失效',
                 sec4_title: '🎟️ Battle Pass', tag_free: '免费参加', sec4_h1: '天天刷任务⚔️也能解锁老司机好康', sec4_desc: '每天完成任务赚星星⭐提升等级就能解锁专属奖励', btn_details: '立即解任务', main_cta: '天天领免费钻石💎',
                 
                 fomo_prefix: '还剩下 ', fomo_h: '时 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 购买机会',
@@ -243,6 +276,7 @@
                 sec2_title: '🎬 Free Hot Videos', sec5_title: '🏆 Top Unlocked Videos',
                 sec3_title: '💎 Newbie Pack', sec3_desc: 'Limited $29 Diamond Pack.', 
                 sec3_disclaimer: 'New user exclusive! Available for 1 day after registration. Limit 1 per item.', btn_buy: 'Buy Now', 
+                sec3_warning: '⚠️ Exclusive 1200% bonus will expire permanently after countdown',
                 sec4_title: '🎟️ Battle Pass', tag_free: 'Free to Join', sec4_h1: 'Daily tasks⚔️ to unlock perks', sec4_desc: 'Complete daily tasks to earn stars⭐ and unlock rewards', btn_details: 'Start Tasks', main_cta: 'Claim Daily Diamonds💎',
                 
                 fomo_prefix: 'Only ', fomo_h: 'h ', fomo_m: 'm ', fomo_s: 's ', fomo_suffix: ' left to buy!',
@@ -256,6 +290,7 @@
                 sec2_title: '🎬 無料人気動画', sec5_title: '🏆 人気ロック解除動画',
                 sec3_title: '💎 初心者限定パック', sec3_desc: '限定$29ダイヤパック。', 
                 sec3_disclaimer: '新規ユーザー限定特典。登録後1日以内にご購入ください。各商品1回限り。', btn_buy: '今すぐ購入', 
+                sec3_warning: '⚠️ カウントダウン終了後、限定1200%ボーナスは永久に失効します',
                 sec4_title: '🎟️ バトルパス', tag_free: '無料参加', sec4_h1: '任務をこなして⚔️報酬を解除', sec4_desc: '毎日ミッションで星⭐をゲット！レベルアップして報酬を解除しよう', btn_details: '今すぐ解任務', main_cta: '毎日無料ダイヤを受け取る💎',
                 
                 fomo_prefix: '残り ', fomo_h: '時間 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購入チャンス',
@@ -294,14 +329,25 @@
 
         function startCountdown(seconds) {
             const box = document.getElementById('countdown-box');
+            const packCard = document.getElementById('pack-card');
+            const warningText = document.getElementById('pack-warning');
+            
             box.style.display = 'inline-block';
+            warningText.style.display = 'block'; // 顯示損失規避微文案
             
             countdownInterval = setInterval(() => {
                 if (seconds <= 0) {
                     clearInterval(countdownInterval);
+                    packCard.classList.remove('panic-mode');
                     renderExpiredPack();
                     return;
                 }
+                
+                // 【觸發 Panic Mode】當剩餘時間小於 1 小時 (3600秒)
+                if (seconds < 3600 && !packCard.classList.contains('panic-mode')) {
+                    packCard.classList.add('panic-mode');
+                }
+
                 const h = Math.floor(seconds / 3600);
                 const m = Math.floor((seconds % 3600) / 60);
                 const s = Math.floor(seconds % 60);
@@ -309,7 +355,6 @@
                 const lang = document.getElementById('langSelect').value;
                 const t = T[lang] || T['zh-TW'];
                 
-                // 套用 FOMO 特效的 HTML 結構
                 box.innerHTML = `${t.fomo_prefix}<span class="fomo-num">${String(h).padStart(2,'0')}</span>${t.fomo_h}<span class="fomo-num">${String(m).padStart(2,'0')}</span>${t.fomo_m}<span class="fomo-num">${String(s).padStart(2,'0')}</span>${t.fomo_s}${t.fomo_suffix}`;
                 seconds--;
             }, 1000);
@@ -317,6 +362,8 @@
 
         function renderExpiredPack() {
             document.getElementById('countdown-box').style.display = 'none';
+            document.getElementById('pack-warning').style.display = 'none'; // 隱藏警告文案
+            document.getElementById('pack-card').classList.remove('panic-mode'); // 確保移除警告樣式
             
             document.getElementById('pack-section-title').setAttribute('data-i18n', 'sec3_title_exp');
             document.getElementById('pack-title').setAttribute('data-i18n', 'pack_exp_title');
@@ -403,20 +450,15 @@
                 document.getElementById('section-hot-videos').style.display = 'none';
             }
 
-            // 【修改】倒數計時邏輯準備：
-            // 待未來實裝 API 後，你可以透過以下邏輯取得剩餘秒數：
-            /*
-            const res = await fetch(`YOUR_API_URL?user_id=${userId}`);
-            const data = await res.json();
-            const regTime = new Date(data.registration_time); // 假設回傳註冊時間
-            const midnight = new Date(regTime);
-            midnight.setDate(midnight.getDate() + 1);
-            midnight.setHours(0, 0, 0, 0);
-            const remainingSeconds = Math.floor((midnight - new Date()) / 1000);
-            */
+            // 【測試模式解析】
+            // 只要在網址加上 ?test_mode=panic，就會強制設定秒數為 59 分 55 秒，觸發最後一小時警告模式
+            const urlParams = new URLSearchParams(window.location.search);
+            let mockRemainingSeconds = 86399; // 預設 23:59:59
 
-            // 目前先直接帶入 23:59:59 (86399秒) 供展示與檢視特效
-            const mockRemainingSeconds = 86399; 
+            if (urlParams.get('test_mode') === 'panic') {
+                mockRemainingSeconds = 3595; // 故意設定低於 3600 秒 (59分55秒) 來預覽特效
+            }
+
             if (mockRemainingSeconds > 0) {
                 startCountdown(mockRemainingSeconds);
             } else {
