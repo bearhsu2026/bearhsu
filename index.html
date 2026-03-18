@@ -26,12 +26,17 @@
         .hero-subtitle { font-size: 1rem; color: var(--text-muted); margin-bottom: 24px; }
 
         .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); margin: 36px 0 12px 0; }
-        .section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; padding: 8px 16px; display: flex; align-items: center; gap: 8px; border-radius: 4px 16px 16px 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        
+        /* 調整了 margin-bottom 讓副標題更貼近主標題 */
+        .section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; padding: 8px 16px; display: flex; align-items: center; gap: 8px; border-radius: 4px 16px 16px 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
         .title-creators { background: linear-gradient(90deg, rgba(255, 42, 95, 0.4) 0%, rgba(255, 42, 95, 0) 100%); border-left: 5px solid var(--brand-primary); }
         .title-videos { background: linear-gradient(90deg, rgba(42, 134, 255, 0.4) 0%, rgba(42, 134, 255, 0) 100%); border-left: 5px solid #2a86ff; }
         .title-hot-videos { background: linear-gradient(90deg, rgba(255, 106, 0, 0.4) 0%, rgba(255, 106, 0, 0) 100%); border-left: 5px solid #ff6a00; }
         .title-pack { background: linear-gradient(90deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0) 100%); border-left: 5px solid #ffd700; color: #fff;}
         .title-pass { background: linear-gradient(90deg, rgba(157, 42, 255, 0.4) 0%, rgba(157, 42, 255, 0) 100%); border-left: 5px solid var(--brand-secondary); }
+
+        /* 【新增】區塊微文案樣式 */
+        .section-desc { font-size: 0.85rem; color: var(--text-muted); margin: 0 16px 16px 16px; line-height: 1.4; letter-spacing: 0.3px; }
 
         .title-tag { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; font-style: italic; letter-spacing: 0.5px; margin-left: auto; text-transform: uppercase; }
         .tag-free { background-color: var(--brand-primary); color: #fff; }
@@ -171,6 +176,7 @@
 
             <div id="section-creator">
                 <div class="section-title title-creators" data-i18n="sec1_title"></div>
+                <div class="section-desc" data-i18n="sec1_subtitle"></div>
                 <div class="carousel-wrapper">
                     <button class="nav-btn nav-left" onclick="scrollCarousel('creator-list', -1)">&#10094;</button>
                     <div class="horizontal-scroll" id="creator-list"></div>
@@ -184,6 +190,7 @@
                     <span data-i18n="sec2_title"></span>
                     <span class="title-tag tag-free">FREE</span>
                 </div>
+                <div class="section-desc" data-i18n="sec2_subtitle"></div>
                 <div class="carousel-wrapper">
                     <button class="nav-btn nav-left" onclick="scrollCarousel('video-list', -1)">&#10094;</button>
                     <div class="video-grid" id="video-list"></div>
@@ -197,6 +204,7 @@
                     <span data-i18n="sec5_title"></span>
                     <span class="title-tag tag-hot">HOT</span>
                 </div>
+                <div class="section-desc" data-i18n="sec5_subtitle"></div>
                 <div class="carousel-wrapper">
                     <button class="nav-btn nav-left" onclick="scrollCarousel('hot-video-list', -1)">&#10094;</button>
                     <div class="video-grid" id="hot-video-list"></div>
@@ -221,6 +229,7 @@
             </div>
 
             <div class="section-title title-pass" data-i18n="sec4_title"></div>
+            <div class="section-desc" data-i18n="sec4_subtitle"></div>
             <div class="banner-card purple" data-glow-target="pass-btn">
                 <div class="pass-header-wrapper">
                     <span class="pass-title" data-i18n="sec4_h1"></span>
@@ -240,57 +249,105 @@
         const T = {
             'zh-TW': { 
                 title: '第一次玩 SWAG 就上手', subtitle: '快速通關秘笈大公開，馬上晉升懂玩老手！', 
-                sec1_title: '🔥 追蹤人氣女神', btn_follow: '立即追蹤', 
-                sec2_title: '🎬 免費熱播大片', sec5_title: '🏆 熱銷解鎖榜單',
+                
+                sec1_title: '🔥 追蹤人氣女神', 
+                sec1_subtitle: '點擊追蹤，她的最新限動與開播通知第一時間掌握！',
+                btn_follow: '立即追蹤', 
+                
+                sec2_title: '🎬 免費熱播大片', 
+                sec2_subtitle: '嚴選站內最高人氣神作，免花鑽通通讓你看到爽！',
+                
+                sec5_title: '🏆 熱銷解鎖榜單',
+                sec5_subtitle: '捨不得快轉的極品企劃，立刻解鎖體驗最高級的視覺震撼。',
+                
                 sec3_title: '💎 新手限定禮包', sec3_desc: '限量 $29 新手鑽石包，超高 CP 值！', 
                 sec3_disclaimer: '新用戶專屬福利，僅限註冊後 1 天內搶購！每位用戶僅此 1 次機會', btn_buy: '$29 立即帶走', 
                 sec3_warning: '⚠️ 倒數結束後，專屬 1200% 特權將永久失效',
-                sec4_title: '🎟️ Battle Pass', tag_free: '免費參加', sec4_h1: '天天刷任務⚔️也能解鎖老司機好康', sec4_desc: '每天完成任務賺星星⭐提升等級就能解鎖專屬獎勵', btn_details: '立即解任務', main_cta: '天天領免費鑽石💎',
                 
+                sec4_title: '🎟️ Battle Pass', 
+                sec4_subtitle: '邊玩邊賺最划算！解鎖每日指定任務，海量鑽石與特權白白送你。',
+                tag_free: '免費參加', sec4_h1: '天天刷任務⚔️也能解鎖老司機好康', sec4_desc: '每天完成任務賺星星⭐提升等級就能解鎖專屬獎勵', btn_details: '立即解任務', 
+                
+                main_cta: '天天領免費鑽石💎',
                 fomo_prefix: '還剩下 ', fomo_h: '時 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購買機會',
-                
                 sec3_title_exp: '💎 鑽石限量禮包',
                 pack_exp_title: '⚠️ 最後挽回！專屬 1200% 加量特權', pack_exp_badge: '+1200%', pack_exp_desc: '【會員限定好康】敬請把握最後的專屬加量優惠！', pack_exp_btn: '領取加量特權'
             },
             'zh-CN': { 
                 title: '第一次玩 SWAG 就上手', subtitle: '快速通关秘笈大公开，马上晋升懂玩老手！', 
-                sec1_title: '🔥 追踪人气女神', btn_follow: '立即追踪', 
-                sec2_title: '🎬 免费热播大片', sec5_title: '🏆 热销解锁榜单',
+                
+                sec1_title: '🔥 追踪人气女神', 
+                sec1_subtitle: '点击追踪，她的最新限动与开播通知第一时间掌握！',
+                btn_follow: '立即追踪', 
+                
+                sec2_title: '🎬 免费热播大片', 
+                sec2_subtitle: '严选站内最高人气神作，免花钻通通让你看到爽！',
+                
+                sec5_title: '🏆 热销解锁榜单',
+                sec5_subtitle: '舍不得快转的极品企划，立刻解锁体验最高级的视觉震撼。',
+                
                 sec3_title: '💎 新手限定礼包', sec3_desc: '限量 $29 新手钻石包，超高 CP 值！', 
                 sec3_disclaimer: '新用户专属福利，仅限注册后 1 天内抢购！每位用户仅此 1 次机会', btn_buy: '$29 立即带走', 
                 sec3_warning: '⚠️ 倒数结束后，专属 1200% 特权将永久失效',
-                sec4_title: '🎟️ Battle Pass', tag_free: '免费参加', sec4_h1: '天天刷任务⚔️也能解锁老司机好康', sec4_desc: '每天完成任务赚星星⭐提升等级就能解锁专属奖励', btn_details: '立即解任务', main_cta: '天天领免费钻石💎',
                 
+                sec4_title: '🎟️ Battle Pass', 
+                sec4_subtitle: '边玩边赚最划算！解锁每日指定任务，海量钻石与特权白白送你。',
+                tag_free: '免费参加', sec4_h1: '天天刷任务⚔️也能解锁老司机好康', sec4_desc: '每天完成任务赚星星⭐提升等级就能解锁专属奖励', btn_details: '立即解任务', 
+                
+                main_cta: '天天领免费钻石💎',
                 fomo_prefix: '还剩下 ', fomo_h: '时 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 购买机会',
-                
                 sec3_title_exp: '💎 钻石限量礼包',
                 pack_exp_title: '⚠️ 最后挽回！专属 1200% 加量特权', pack_exp_badge: '+1200%', pack_exp_desc: '【会员限定好康】敬请把握最后的专属加量优惠！', pack_exp_btn: '领取加量特权'
             },
             'en': { 
                 title: 'Get Started with SWAG', subtitle: 'Fast track to become a pro explorer!', 
-                sec1_title: '🔥 Top Creators', btn_follow: 'Follow', 
-                sec2_title: '🎬 Free Hot Videos', sec5_title: '🏆 Top Unlocked Videos',
+                
+                sec1_title: '🔥 Top Creators', 
+                sec1_subtitle: 'Follow now to catch her latest stories and live streams instantly!',
+                btn_follow: 'Follow', 
+                
+                sec2_title: '🎬 Free Hot Videos', 
+                sec2_subtitle: 'Top-rated masterpieces handpicked for you. Watch them all for free!',
+                
+                sec5_title: '🏆 Top Unlocked Videos',
+                sec5_subtitle: 'Premium content you can\'t skip. Unlock now for the ultimate visual thrill.',
+                
                 sec3_title: '💎 Newbie Pack', sec3_desc: 'Limited $29 Diamond Pack, Best Value!', 
                 sec3_disclaimer: 'New user exclusive! Available for 1 day after registration. 1 per user.', btn_buy: 'Get it for $29', 
                 sec3_warning: '⚠️ Exclusive 1200% bonus will expire permanently after countdown',
-                sec4_title: '🎟️ Battle Pass', tag_free: 'Free to Join', sec4_h1: 'Daily tasks⚔️ to unlock perks', sec4_desc: 'Complete daily tasks to earn stars⭐ and unlock rewards', btn_details: 'Start Tasks', main_cta: 'Claim Daily Diamonds💎',
                 
+                sec4_title: '🎟️ Battle Pass', 
+                sec4_subtitle: 'Play and earn! Complete daily tasks for massive diamonds and perks.',
+                tag_free: 'Free to Join', sec4_h1: 'Daily tasks⚔️ to unlock perks', sec4_desc: 'Complete daily tasks to earn stars⭐ and unlock rewards', btn_details: 'Start Tasks', 
+                
+                main_cta: 'Claim Daily Diamonds💎',
                 fomo_prefix: 'Only ', fomo_h: 'h ', fomo_m: 'm ', fomo_s: 's ', fomo_suffix: ' left to buy!',
-                
                 sec3_title_exp: '💎 Limited Diamond Pack',
                 pack_exp_title: '⚠️ Last Chance! Exclusive 1200% Bonus', pack_exp_badge: '+1200%', pack_exp_desc: 'Exclusive member benefit! Grab your final bonus offer now.', pack_exp_btn: 'Claim Bonus Now'
             },
             'ja': { 
                 title: 'SWAGの始め方ガイド', subtitle: '初心者向けガイド、すぐにプロの仲間入り！', 
-                sec1_title: '🔥 人気女神をフォロー', btn_follow: 'フォロー', 
-                sec2_title: '🎬 無料人気動画', sec5_title: '🏆 人気ロック解除動画',
+                
+                sec1_title: '🔥 人気女神をフォロー', 
+                sec1_subtitle: 'フォローして、最新ストーリーと配信通知をいち早くゲット！',
+                btn_follow: 'フォロー', 
+                
+                sec2_title: '🎬 無料人気動画', 
+                sec2_subtitle: '厳選された超人気作！ダイヤ消費なしで見放題！',
+                
+                sec5_title: '🏆 人気ロック解除動画',
+                sec5_subtitle: 'スキップできない極上企画。今すぐロック解除して最高の視覚体験を。',
+                
                 sec3_title: '💎 初心者限定パック', sec3_desc: '限定$29ダイヤパック、超お得！', 
                 sec3_disclaimer: '新規ユーザー限定特典。登録後1日以内にご購入ください。お一人様1回限り。', btn_buy: '$29で今すぐ購入', 
                 sec3_warning: '⚠️ カウントダウン終了後、限定1200%ボーナスは永久に失効します',
-                sec4_title: '🎟️ バトルパス', tag_free: '無料参加', sec4_h1: '任務をこなして⚔️報酬を解除', sec4_desc: '毎日ミッションで星⭐をゲット！レベルアップして報酬を解除しよう', btn_details: '今すぐ解任務', main_cta: '毎日無料ダイヤを受け取る💎',
                 
+                sec4_title: '🎟️ バトルパス', 
+                sec4_subtitle: '遊んで稼ぐのが一番お得！デイリー任務で大量のダイヤと特権を無料でGET。',
+                tag_free: '無料参加', sec4_h1: '任務をこなして⚔️報酬を解除', sec4_desc: '毎日ミッションで星⭐をゲット！レベルアップして報酬を解除しよう', btn_details: '今すぐ解任務', 
+                
+                main_cta: '毎日無料ダイヤを受け取る💎',
                 fomo_prefix: '残り ', fomo_h: '時間 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購入チャンス',
-                
                 sec3_title_exp: '💎 限定ダイヤパック',
                 pack_exp_title: '⚠️ ラストチャンス！限定1200%増量特権', pack_exp_badge: '+1200%', pack_exp_desc: '会員限定！最後の増量オファーをお見逃しなく。', pack_exp_btn: '増量特権を受け取る'
             }
@@ -393,7 +450,7 @@
                 document.getElementById('section-creator').style.display = 'none';
             }
             
-            // 2. 【更新】正式串接免費熱播大片 API
+            // 2. 抓取免費熱播大片 API 
             try {
                 const res = await fetch('https://api.swag.live/feeds/flix_trending_free_popular?page=1&limit=30');
                 const listData = await res.json();
