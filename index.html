@@ -20,23 +20,25 @@
         @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, 70px) scale(1.15); } }
 
         .container { position: relative; padding: 24px 20px 100px 20px; max-width: 600px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
-        .header { display: flex; justify-content: flex-end; margin-bottom: 24px; }
-        .lang-switcher { appearance: none; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); color: var(--text-main); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; outline: none; }
-        .hero-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; background: linear-gradient(135deg, #fff, var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* 【優化 1】將主標題與語言切換器整合為同行對齊 */
+        .hero-header-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; }
+        .hero-title { font-size: 1.5rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, #fff, var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .lang-switcher { appearance: none; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); color: var(--text-main); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; outline: none; flex-shrink: 0; }
+        
         .hero-subtitle { font-size: 1rem; color: var(--text-muted); margin-bottom: 24px; }
-
         .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); margin: 36px 0 12px 0; }
         
-        /* 調整了 margin-bottom 讓副標題更貼近主標題 */
-        .section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; padding: 8px 16px; display: flex; align-items: center; gap: 8px; border-radius: 4px 16px 16px 4px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        /* 【優化 2】區塊標題與微文案樣式整合 */
+        .section-title { margin-bottom: 16px; padding: 10px 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; border-radius: 4px 16px 16px 4px; }
+        .title-header { display: flex; align-items: center; gap: 8px; width: 100%; font-size: 1.1rem; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .section-desc { font-size: 0.8rem; color: rgba(255,255,255,0.8); margin: 0; line-height: 1.35; font-weight: 500; letter-spacing: 0.3px; text-shadow: none; }
+
         .title-creators { background: linear-gradient(90deg, rgba(255, 42, 95, 0.4) 0%, rgba(255, 42, 95, 0) 100%); border-left: 5px solid var(--brand-primary); }
         .title-videos { background: linear-gradient(90deg, rgba(42, 134, 255, 0.4) 0%, rgba(42, 134, 255, 0) 100%); border-left: 5px solid #2a86ff; }
         .title-hot-videos { background: linear-gradient(90deg, rgba(255, 106, 0, 0.4) 0%, rgba(255, 106, 0, 0) 100%); border-left: 5px solid #ff6a00; }
         .title-pack { background: linear-gradient(90deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0) 100%); border-left: 5px solid #ffd700; color: #fff;}
         .title-pass { background: linear-gradient(90deg, rgba(157, 42, 255, 0.4) 0%, rgba(157, 42, 255, 0) 100%); border-left: 5px solid var(--brand-secondary); }
-
-        /* 【新增】區塊微文案樣式 */
-        .section-desc { font-size: 0.85rem; color: var(--text-muted); margin: 0 16px 16px 16px; line-height: 1.4; letter-spacing: 0.3px; }
 
         .title-tag { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; font-style: italic; letter-spacing: 0.5px; margin-left: auto; text-transform: uppercase; }
         .tag-free { background-color: var(--brand-primary); color: #fff; }
@@ -164,19 +166,21 @@
     <div class="fluid-bg"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
 
     <div class="container" id="main-container">
-        <div class="header">
+        
+        <div class="hero-header-wrapper">
+            <h1 class="hero-title" data-i18n="title"></h1>
             <select id="langSelect" class="lang-switcher" onchange="changeLanguage(this.value)">
                 <option value="zh-TW">繁體中文</option><option value="zh-CN">简体中文</option><option value="en">English</option><option value="ja">日本語</option>
             </select>
         </div>
+        <p class="hero-subtitle" data-i18n="subtitle"></p>
 
         <div id="real-content">
-            <h1 class="hero-title" data-i18n="title"></h1>
-            <p class="hero-subtitle" data-i18n="subtitle"></p>
-
             <div id="section-creator">
-                <div class="section-title title-creators" data-i18n="sec1_title"></div>
-                <div class="section-desc" data-i18n="sec1_subtitle"></div>
+                <div class="section-title title-creators">
+                    <div class="title-header" data-i18n="sec1_title"></div>
+                    <div class="section-desc" data-i18n="sec1_subtitle"></div>
+                </div>
                 <div class="carousel-wrapper">
                     <button class="nav-btn nav-left" onclick="scrollCarousel('creator-list', -1)">&#10094;</button>
                     <div class="horizontal-scroll" id="creator-list"></div>
@@ -187,10 +191,12 @@
 
             <div id="section-free-videos">
                 <div class="section-title title-videos">
-                    <span data-i18n="sec2_title"></span>
-                    <span class="title-tag tag-free">FREE</span>
+                    <div class="title-header">
+                        <span data-i18n="sec2_title"></span>
+                        <span class="title-tag tag-free">FREE</span>
+                    </div>
+                    <div class="section-desc" data-i18n="sec2_subtitle"></div>
                 </div>
-                <div class="section-desc" data-i18n="sec2_subtitle"></div>
                 <div class="carousel-wrapper">
                     <button class="nav-btn nav-left" onclick="scrollCarousel('video-list', -1)">&#10094;</button>
                     <div class="video-grid" id="video-list"></div>
@@ -201,10 +207,12 @@
 
             <div id="section-hot-videos">
                 <div class="section-title title-hot-videos">
-                    <span data-i18n="sec5_title"></span>
-                    <span class="title-tag tag-hot">HOT</span>
+                    <div class="title-header">
+                        <span data-i18n="sec5_title"></span>
+                        <span class="title-tag tag-hot">HOT</span>
+                    </div>
+                    <div class="section-desc" data-i18n="sec5_subtitle"></div>
                 </div>
-                <div class="section-desc" data-i18n="sec5_subtitle"></div>
                 <div class="carousel-wrapper">
                     <button class="nav-btn nav-left" onclick="scrollCarousel('hot-video-list', -1)">&#10094;</button>
                     <div class="video-grid" id="hot-video-list"></div>
@@ -213,7 +221,9 @@
                 <div class="section-divider"></div>
             </div>
 
-            <div class="section-title title-pack" data-i18n="sec3_title" id="pack-section-title"></div>
+            <div class="section-title title-pack">
+                <div class="title-header" data-i18n="sec3_title" id="pack-section-title"></div>
+            </div>
             <div class="banner-card gold" data-glow-target="newbie-btn" id="pack-card">
                 <div id="countdown-box" class="countdown-box" style="display: none;"></div>
                 
@@ -228,8 +238,10 @@
                 <a href="https://swag.live/?campaign-id=checkout-diamondpack" target="_blank" class="btn-full gold-fill" id="newbie-btn" data-i18n="btn_buy"></a>
             </div>
 
-            <div class="section-title title-pass" data-i18n="sec4_title"></div>
-            <div class="section-desc" data-i18n="sec4_subtitle"></div>
+            <div class="section-title title-pass">
+                <div class="title-header" data-i18n="sec4_title"></div>
+                <div class="section-desc" data-i18n="sec4_subtitle"></div>
+            </div>
             <div class="banner-card purple" data-glow-target="pass-btn">
                 <div class="pass-header-wrapper">
                     <span class="pass-title" data-i18n="sec4_h1"></span>
@@ -246,6 +258,7 @@
     </div>
 
     <script>
+        // 【優化 3】更新了 5880 鑽石文案與防斷行說明文字
         const T = {
             'zh-TW': { 
                 title: '第一次玩 SWAG 就上手', subtitle: '快速通關秘笈大公開，馬上晉升懂玩老手！', 
@@ -260,8 +273,10 @@
                 sec5_title: '🏆 熱銷解鎖榜單',
                 sec5_subtitle: '捨不得快轉的極品企劃，立刻解鎖體驗最高級的視覺震撼。',
                 
-                sec3_title: '💎 新手限定禮包', sec3_desc: '限量 $29 新手鑽石包，超高 CP 值！', 
-                sec3_disclaimer: '新用戶專屬福利，僅限註冊後 1 天內搶購！每位用戶僅此 1 次機會', btn_buy: '$29 立即帶走', 
+                sec3_title: '💎 新手限定禮包', 
+                sec3_desc: '限量 $29 帶走 💎5880 鑽！', 
+                sec3_disclaimer: '新用戶專屬福利，僅限註冊後 1 天內搶購！別錯過', 
+                btn_buy: '$29 立即帶走', 
                 sec3_warning: '⚠️ 倒數結束後，專屬 1200% 特權將永久失效',
                 
                 sec4_title: '🎟️ Battle Pass', 
@@ -286,8 +301,10 @@
                 sec5_title: '🏆 热销解锁榜单',
                 sec5_subtitle: '舍不得快转的极品企划，立刻解锁体验最高级的视觉震撼。',
                 
-                sec3_title: '💎 新手限定礼包', sec3_desc: '限量 $29 新手钻石包，超高 CP 值！', 
-                sec3_disclaimer: '新用户专属福利，仅限注册后 1 天内抢购！每位用户仅此 1 次机会', btn_buy: '$29 立即带走', 
+                sec3_title: '💎 新手限定礼包', 
+                sec3_desc: '限量 $29 带走 💎5880 钻！', 
+                sec3_disclaimer: '新用户专属福利，仅限注册后 1 天内抢购！别错过', 
+                btn_buy: '$29 立即带走', 
                 sec3_warning: '⚠️ 倒数结束后，专属 1200% 特权将永久失效',
                 
                 sec4_title: '🎟️ Battle Pass', 
@@ -312,8 +329,10 @@
                 sec5_title: '🏆 Top Unlocked Videos',
                 sec5_subtitle: 'Premium content you can\'t skip. Unlock now for the ultimate visual thrill.',
                 
-                sec3_title: '💎 Newbie Pack', sec3_desc: 'Limited $29 Diamond Pack, Best Value!', 
-                sec3_disclaimer: 'New user exclusive! Available for 1 day after registration. 1 per user.', btn_buy: 'Get it for $29', 
+                sec3_title: '💎 Newbie Pack', 
+                sec3_desc: 'Limited $29 Pack! Get 💎5880 Diamonds!', 
+                sec3_disclaimer: 'New user exclusive! Available for 1 day after registration. Don\'t miss out!', 
+                btn_buy: 'Get it for $29', 
                 sec3_warning: '⚠️ Exclusive 1200% bonus will expire permanently after countdown',
                 
                 sec4_title: '🎟️ Battle Pass', 
@@ -338,8 +357,10 @@
                 sec5_title: '🏆 人気ロック解除動画',
                 sec5_subtitle: 'スキップできない極上企画。今すぐロック解除して最高の視覚体験を。',
                 
-                sec3_title: '💎 初心者限定パック', sec3_desc: '限定$29ダイヤパック、超お得！', 
-                sec3_disclaimer: '新規ユーザー限定特典。登録後1日以内にご購入ください。お一人様1回限り。', btn_buy: '$29で今すぐ購入', 
+                sec3_title: '💎 初心者限定パック', 
+                sec3_desc: '限定$29パック！💎5880ダイヤをゲット！', 
+                sec3_disclaimer: '新規限定特典。登録後1日以内にご購入ください！お見逃しなく', 
+                btn_buy: '$29で今すぐ購入', 
                 sec3_warning: '⚠️ カウントダウン終了後、限定1200%ボーナスは永久に失効します',
                 
                 sec4_title: '🎟️ バトルパス', 
@@ -348,6 +369,7 @@
                 
                 main_cta: '毎日無料ダイヤを受け取る💎',
                 fomo_prefix: '残り ', fomo_h: '時間 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購入チャンス',
+                
                 sec3_title_exp: '💎 限定ダイヤパック',
                 pack_exp_title: '⚠️ ラストチャンス！限定1200%増量特権', pack_exp_badge: '+1200%', pack_exp_desc: '会員限定！最後の増量オファーをお見逃しなく。', pack_exp_btn: '増量特権を受け取る'
             }
@@ -477,7 +499,7 @@
                 document.getElementById('section-free-videos').style.display = 'none';
             }
 
-            // 3. 抓取熱銷解鎖榜單 (付費影片API)
+            // 3. 抓取熱銷解鎖榜單
             try {
                 const res = await fetch('https://api.swag.live/feeds/flix_trending_paid_popular?page=1&limit=30'); 
                 const listData = await res.json();
