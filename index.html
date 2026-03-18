@@ -237,7 +237,6 @@
     </div>
 
     <script>
-        // 【已更新】多語系字典檔 (四語系全面對齊、簡體價格改回 $29)
         const T = {
             'zh-TW': { 
                 title: '第一次玩 SWAG 就上手', subtitle: '快速通關秘笈大公開，馬上晉升懂玩老手！', 
@@ -299,7 +298,6 @@
 
         let countdownInterval;
 
-        // 【已修改】移除了針對簡體中文(zh-CN)強迫顯示 9.9 元的特殊邏輯
         function changeLanguage(lang) {
             const t = T[lang] || T['zh-TW'];
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -377,6 +375,7 @@
             renderSkeletons('video-list', 'video', 6);
             renderSkeletons('hot-video-list', 'video', 6); 
 
+            // 1. 抓取人氣女神
             try {
                 const res = await fetch('https://api.swag.live/feeds/user_leaderboard_livestream_24h_a?limit=10&no-redirect=1&format=user');
                 const list = (await res.json()).slice(0, 10);
@@ -394,16 +393,19 @@
                 document.getElementById('section-creator').style.display = 'none';
             }
             
+            // 2. 【更新】正式串接免費熱播大片 API
             try {
-                const res = await fetch('https://api.swag.live/feeds/flix_trending_free_video?page=1&limit=12');
-                const list = (await res.json()).slice(0, 12);
+                const res = await fetch('https://api.swag.live/feeds/flix_trending_free_popular?page=1&limit=30');
+                const listData = await res.json();
+                const list = (Array.isArray(listData) ? listData : listData.data || listData).slice(0, 12);
+                
                 const container = document.getElementById('video-list');
                 container.innerHTML = '';
                 list.forEach(v => {
                     const card = document.createElement('div');
                     card.className = 'video-item';
                     const dur = v.metadata?.duration || v.assets?.[0]?.duration || 0;
-                    let displayCaption = v.caption ? v.caption.replace(/\{user_id\}/g, '').replace(/\{username\}/g, '').trim() : "";
+                    let displayCaption = v.caption ? v.caption.replace(/\{user_id\}/g, '').replace(/\{username\}/g, '').trim() : (v.text || "");
 
                     card.innerHTML = `<a href="https://swag.live/post/${v.id}" target="_blank" style="display:contents; color:inherit; text-decoration:none;">
                                       <div class="video-cover-container">
@@ -418,16 +420,19 @@
                 document.getElementById('section-free-videos').style.display = 'none';
             }
 
+            // 3. 抓取熱銷解鎖榜單 (付費影片API)
             try {
-                const res = await fetch('https://api.swag.live/feeds/flix_trending_free_video?page=2&limit=12'); 
-                const list = (await res.json()).slice(0, 12);
+                const res = await fetch('https://api.swag.live/feeds/flix_trending_paid_popular?page=1&limit=30'); 
+                const listData = await res.json();
+                const list = (Array.isArray(listData) ? listData : listData.data || listData).slice(0, 12);
+                
                 const container = document.getElementById('hot-video-list');
                 container.innerHTML = '';
                 list.forEach(v => {
                     const card = document.createElement('div');
                     card.className = 'video-item';
                     const dur = v.metadata?.duration || v.assets?.[0]?.duration || 0;
-                    let displayCaption = v.caption ? v.caption.replace(/\{user_id\}/g, '').replace(/\{username\}/g, '').trim() : "";
+                    let displayCaption = v.caption ? v.caption.replace(/\{user_id\}/g, '').replace(/\{username\}/g, '').trim() : (v.text || "");
 
                     card.innerHTML = `<a href="https://swag.live/post/${v.id}" target="_blank" style="display:contents; color:inherit; text-decoration:none;">
                                       <div class="video-cover-container">
@@ -442,9 +447,9 @@
                 document.getElementById('section-hot-videos').style.display = 'none';
             }
 
+            // 4. 抓取用戶註冊時間與倒數
             const urlParams = new URLSearchParams(window.location.search);
             const userId = urlParams.get('user_id') || '693d121965e1e17a7f081d74'; 
-
             let mockRemainingSeconds = null;
 
             if (urlParams.get('test_mode') === 'panic') {
