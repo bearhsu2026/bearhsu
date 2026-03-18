@@ -79,7 +79,6 @@
         .pass-title { color: #ffd700; font-weight: 800; font-size: 1rem; }
         .tag-purple { background: var(--brand-secondary); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 800; }
         
-        /* 倒數計時與 FOMO 基礎特效 */
         .countdown-box { 
             display: inline-block; 
             background: rgba(255, 42, 95, 0.15); 
@@ -102,7 +101,6 @@
             animation: fomo-text-pulse 1s infinite alternate; 
         }
         
-        /* 【新增】損失規避微文案 (Idea 3) */
         .fomo-warning {
             font-size: 0.8rem;
             color: #ff2a5f;
@@ -111,7 +109,6 @@
             animation: fomo-text-pulse 1.5s infinite alternate;
         }
 
-        /* 【新增】最後一小時 Panic Mode (Idea 4) */
         .banner-card.gold.panic-mode {
             border-color: rgba(255, 42, 95, 0.6);
             background: linear-gradient(135deg, rgba(255, 42, 95, 0.15), rgba(24, 24, 27, 0.95));
@@ -240,7 +237,6 @@
     </div>
 
     <script>
-        // 多語系字典更新 (加入微文案 sec3_warning)
         const T = {
             'zh-TW': { 
                 title: '第一次玩 SWAG 就上手', subtitle: '快速通關秘笈大公開，馬上晉升懂玩老手！', 
@@ -333,7 +329,7 @@
             const warningText = document.getElementById('pack-warning');
             
             box.style.display = 'inline-block';
-            warningText.style.display = 'block'; // 顯示損失規避微文案
+            warningText.style.display = 'block'; 
             
             countdownInterval = setInterval(() => {
                 if (seconds <= 0) {
@@ -343,7 +339,6 @@
                     return;
                 }
                 
-                // 【觸發 Panic Mode】當剩餘時間小於 1 小時 (3600秒)
                 if (seconds < 3600 && !packCard.classList.contains('panic-mode')) {
                     packCard.classList.add('panic-mode');
                 }
@@ -362,8 +357,8 @@
 
         function renderExpiredPack() {
             document.getElementById('countdown-box').style.display = 'none';
-            document.getElementById('pack-warning').style.display = 'none'; // 隱藏警告文案
-            document.getElementById('pack-card').classList.remove('panic-mode'); // 確保移除警告樣式
+            document.getElementById('pack-warning').style.display = 'none'; 
+            document.getElementById('pack-card').classList.remove('panic-mode'); 
             
             document.getElementById('pack-section-title').setAttribute('data-i18n', 'sec3_title_exp');
             document.getElementById('pack-title').setAttribute('data-i18n', 'pack_exp_title');
@@ -426,6 +421,7 @@
                 document.getElementById('section-free-videos').style.display = 'none';
             }
 
+            // 待補的熱銷解鎖榜單 API (目前暫用免費推薦第2頁作為佔位符)
             try {
                 const res = await fetch('https://api.swag.live/feeds/flix_trending_free_video?page=2&limit=12'); 
                 const list = (await res.json()).slice(0, 12);
@@ -450,19 +446,41 @@
                 document.getElementById('section-hot-videos').style.display = 'none';
             }
 
-            // 【測試模式解析】
-            // 只要在網址加上 ?test_mode=panic，就會強制設定秒數為 59 分 55 秒，觸發最後一小時警告模式
+            // 【正式串接：用戶註冊時間倒數 API】
             const urlParams = new URLSearchParams(window.location.search);
-            let mockRemainingSeconds = 86399; // 預設 23:59:59
+            const userId = urlParams.get('user_id') || '693d121965e1e17a7f081d74'; // 前端自動抓取 user_id 或使用 fallback
 
+            let mockRemainingSeconds = null;
+
+            // 判斷是否為測試模式
             if (urlParams.get('test_mode') === 'panic') {
-                mockRemainingSeconds = 3595; // 故意設定低於 3600 秒 (59分55秒) 來預覽特效
+                mockRemainingSeconds = 3595; // 強制設定為 59分55秒 觸發 Panic Mode
             }
 
-            if (mockRemainingSeconds > 0) {
-                startCountdown(mockRemainingSeconds);
+            if (mockRemainingSeconds !== null) {
+                // 如果是測試模式，直接套用測試秒數
+                if (mockRemainingSeconds > 0) {
+                    startCountdown(mockRemainingSeconds);
+                } else {
+                    renderExpiredPack();
+                }
             } else {
-                renderExpiredPack(); 
+                // 正式呼叫 API
+                try {
+                    const apiUrl = `https://swag-api-proxy-905468082258.asia-east1.run.app/api/user_info?user_id=${userId}`;
+                    const timeRes = await fetch(apiUrl);
+                    const timeData = await timeRes.json();
+                    
+                    // 檢查 time_diff_seconds 判斷是否大於 0
+                    if (timeData && timeData.time_diff_seconds > 0) {
+                        startCountdown(timeData.time_diff_seconds);
+                    } else {
+                        renderExpiredPack(); 
+                    }
+                } catch(e) {
+                    // 若 API 掛掉或發生錯誤，自動 fallback 到過期狀態確保不破圖
+                    renderExpiredPack(); 
+                }
             }
 
             changeLanguage(document.getElementById('langSelect').value);
