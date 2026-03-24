@@ -315,10 +315,6 @@
         </div>
     </div>
 
-    <div class="cta-wrapper" id="cta-wrapper" data-glow-target="main-cta-btn">
-        <button class="cta-btn scroll-glow" id="main-cta-btn" data-i18n="main_cta" onclick="handleMainCTAClick()"></button>
-    </div>
-
     <script>
         const T = {
             'zh-TW': { 
@@ -334,7 +330,6 @@
                 sec5_title: '🏆 熱銷解鎖榜單',
                 sec5_subtitle: '捨不得快轉的極品企劃，立刻解鎖體驗最高級的視覺震撼。',
                 
-                /* 鑽石說明區塊更新 */
                 sec_info_title: '💎 鑽石能做什麼？',
                 sec_info_subtitle: '站內唯一通用貨幣，帶你解鎖所有大尺度玩法！',
                 feat_1: '解鎖私密大片',
@@ -370,7 +365,6 @@
                 sec5_title: '🏆 热销解锁榜单',
                 sec5_subtitle: '舍不得快转的极品企划，立刻解锁体验最高级的视觉震撼。',
                 
-                /* 鑽石說明區塊更新 */
                 sec_info_title: '💎 钻石能做什么？',
                 sec_info_subtitle: '站内唯一通用货币，带你解锁所有大尺度玩法！',
                 feat_1: '解锁私密大片',
@@ -536,9 +530,11 @@
 
         async function init() {
             if (window.self !== window.top) {
-                document.getElementById('main-container').style.paddingBottom = '220px';
-                const ctaWrapper = document.getElementById('cta-wrapper');
-                if (ctaWrapper) ctaWrapper.style.paddingBottom = '100px'; 
+                // 暫時移除底部 CTA，故將原本的 220px 縮減為 140px，僅作基本的底部安全距離緩衝
+                document.getElementById('main-container').style.paddingBottom = '140px';
+                // 未來加回 CTA 按鈕時，請將上方改回 220px，並解除下方兩行程式碼的註解：
+                // const ctaWrapper = document.getElementById('cta-wrapper');
+                // if (ctaWrapper) ctaWrapper.style.paddingBottom = '100px'; 
             }
 
             renderSkeletons('creator-list', 'creator', 6);
