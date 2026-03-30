@@ -317,8 +317,9 @@
 
     <div class="cta-wrapper" id="cta-wrapper" data-glow-target="main-cta-btn">
         <button class="cta-btn scroll-glow" id="main-cta-btn" onclick="handleMainCTAClick()" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <span data-i18n="main_cta">前往任務活動領取</span>
-            <img src="https://swag.live/static/img/ic_diamond_sm.cf6904ca.svg" alt="diamond" style="width: 22px; height: 22px;">
+            <span data-i18n="main_cta">天天免費領取</span>
+            <img src="https://swag.live/static/img/ic_diamond_sm.cf6904ca.svg" alt="diamond" style="width: 22px; height: 22px; margin-top: -2px;">
+            <span>20</span>
         </button>
     </div>
 
@@ -354,7 +355,7 @@
                 sec4_subtitle: '邊玩邊賺最划算！解鎖每日指定任務，海量鑽石與特權白白送你。',
                 tag_free: '免費參加', sec4_h1: '天天刷任務⚔️也能解鎖老司機好康', sec4_desc: '每天完成任務賺星星⭐提升等級就能解鎖專屬獎勵', btn_details: '立即解任務', 
                 
-                main_cta: '前往任務活動領取',
+                main_cta: '天天免費領取',
                 fomo_prefix: '還剩下 ', fomo_h: '時 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購買機會',
                 sec3_title_exp: '💎 鑽石限量禮包',
                 pack_exp_title: '⚠️ 最後挽回！專屬 1200% 加量特權', pack_exp_badge: '+1200%', pack_exp_desc: '【會員限定好康】敬請把握最後的專屬加量優惠！', pack_exp_btn: '領取加量特權'
@@ -389,7 +390,7 @@
                 sec4_subtitle: '边玩边赚最划算！解锁每日指定任务，海量钻石与特权白白送你。',
                 tag_free: '免费参加', sec4_h1: '天天刷任务⚔️也能解锁老司机好康', sec4_desc: '每天完成任务赚星星⭐提升等级就能解锁专属奖励', btn_details: '立即解任务', 
                 
-                main_cta: '前往任务活动领取',
+                main_cta: '天天免费领取',
                 fomo_prefix: '还剩下 ', fomo_h: '时 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 购买机会',
                 sec3_title_exp: '💎 钻石限量礼包',
                 pack_exp_title: '⚠️ 最后挽回！专属 1200% 加量特权', pack_exp_badge: '+1200%', pack_exp_desc: '【会员限定好康】敬请把握最后的专属加量优惠！', pack_exp_btn: '领取加量特权'
@@ -424,7 +425,7 @@
                 sec4_subtitle: 'Play and earn! Complete daily tasks for massive diamonds and perks.',
                 tag_free: 'Free to Join', sec4_h1: 'Daily tasks⚔️ to unlock perks', sec4_desc: 'Complete daily tasks to earn stars⭐ and unlock rewards', btn_details: 'Start Tasks', 
                 
-                main_cta: 'Go to tasks to claim',
+                main_cta: 'Claim Free Daily',
                 fomo_prefix: 'Only ', fomo_h: 'h ', fomo_m: 'm ', fomo_s: 's ', fomo_suffix: ' left to buy!',
                 sec3_title_exp: '💎 Limited Diamond Pack',
                 pack_exp_title: '⚠️ Last Chance! Exclusive 1200% Bonus', pack_exp_badge: '+1200%', pack_exp_desc: 'Exclusive member benefit! Grab your final bonus offer now.', pack_exp_btn: 'Claim Bonus Now'
@@ -459,7 +460,7 @@
                 sec4_subtitle: '遊んで稼ぐのが一番お得！デイリー任務で大量のダイヤと特権を無料でGET。',
                 tag_free: '無料参加', sec4_h1: '任務をこなして⚔️報酬を解除', sec4_desc: '毎日ミッションで星⭐をゲット！レベルアップして報酬を解除しよう', btn_details: '今すぐ解任務', 
                 
-                main_cta: 'ミッションに行って受け取る',
+                main_cta: '毎日無料で受け取る',
                 fomo_prefix: '残り ', fomo_h: '時間 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購入チャンス',
                 
                 sec3_title_exp: '💎 限定ダイヤパック',
@@ -537,6 +538,7 @@
 
         async function init() {
             if (window.self !== window.top) {
+                // 【恢復】保留原本 220px 供底部按鈕做緩衝
                 document.getElementById('main-container').style.paddingBottom = '220px';
                 const ctaWrapper = document.getElementById('cta-wrapper');
                 if (ctaWrapper) ctaWrapper.style.paddingBottom = '100px'; 
@@ -676,9 +678,9 @@
 
         function scrollCarousel(id, dir) { const el = document.getElementById(id); el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: 'smooth' }); }
         
-        // 【已修改】更新為全新的 CTA 點擊連結
+        // 【已修改】更新為全新的任務中心 URL
         function handleMainCTAClick() {
-            const url = 'https://swag.live/?campaign-id=open-modal&campaign=eyJtb2RhbElkIjoiSGFtYnVyZ2VyTWVudU1vZGFsIn0=';
+            const url = 'https://swag.live/?campaign-id=open-modal&campaign=eyJtb2RhbElkIjoiTWlzc2lvbkNlbnRlciJ9';
             if (window.self !== window.top) window.parent.postMessage({ type: 'PWA_NAVIGATE', url: url }, '*');
             else window.location.href = url;
         }
