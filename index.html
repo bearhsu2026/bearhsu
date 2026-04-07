@@ -381,6 +381,7 @@
                 sec3_subtitle: '約可解鎖3 ~ 5部長片、90則以上限動！',
                 sec3_desc: '限量 $29 帶走 💎5880 鑽！', 
                 sec3_disclaimer: '新用戶專屬福利，僅限註冊後 1 天內搶購！別錯過', 
+                sec3_disclaimer_7d: '新用戶專屬福利，僅限註冊後 7 天內搶購！別錯過',
                 btn_buy: '$29 立即帶走', 
                 sec3_warning: '⚠️ 倒數結束後，專屬 1200% 特權將永久失效',
                 
@@ -420,6 +421,7 @@
                 sec3_subtitle: '约可解锁3 ~ 5部长片、90则以上限动！',
                 sec3_desc: '限量 $29 带走 💎5880 钻！', 
                 sec3_disclaimer: '新用户专属福利，仅限注册后 1 天内抢购！别错过', 
+                sec3_disclaimer_7d: '新用户专属福利，仅限注册后 7 天内抢购！别错过',
                 btn_buy: '$29 立即带走', 
                 sec3_warning: '⚠️ 倒数结束后，专属 1200% 特权将永久失效',
                 
@@ -459,6 +461,7 @@
                 sec3_subtitle: 'Unlocks approx. 3-5 full videos, 90+ stories!',
                 sec3_desc: 'Limited $29 Pack! Get 💎5880 Diamonds!', 
                 sec3_disclaimer: 'New user exclusive! Available for 1 day after registration. Don\'t miss out!', 
+                sec3_disclaimer_7d: 'New user exclusive! Available for 7 days after registration. Don\'t miss out!',
                 btn_buy: 'Get it for $29', 
                 sec3_warning: '⚠️ Exclusive 1200% bonus will expire permanently after countdown',
                 
@@ -498,6 +501,7 @@
                 sec3_subtitle: '約3〜5本の動画、90以上のストーリーを解放！',
                 sec3_desc: '限定$29パック！💎5880ダイヤをゲット！', 
                 sec3_disclaimer: '新規限定特典。登録後1日以内にご購入ください！お見逃しなく', 
+                sec3_disclaimer_7d: '新規限定特典。登録後7日以内にご購入ください！お見逃しなく',
                 btn_buy: '$29で今すぐ購入', 
                 sec3_warning: '⚠️ カウントダウン終了後、限定1200%ボーナスは永久に失効します',
                 
@@ -542,15 +546,23 @@
             }
         }
 
-        function startCountdown(seconds) {
+        function startCountdown(seconds, is7DayMode = false) {
             const box = document.getElementById('countdown-box');
             const packCard = document.getElementById('pack-card');
             const warningText = document.getElementById('pack-warning');
             const floatBtn = document.getElementById('floating-gift-btn');
+            const descText = document.getElementById('pack-desc');
             
             box.style.display = 'inline-block';
             warningText.style.display = 'block'; 
             floatBtn.style.display = 'flex'; 
+            
+            if (is7DayMode) {
+                descText.setAttribute('data-i18n', 'sec3_disclaimer_7d');
+            } else {
+                descText.setAttribute('data-i18n', 'sec3_disclaimer');
+            }
+            changeLanguage(document.getElementById('langSelect').value);
             
             countdownInterval = setInterval(() => {
                 if (seconds <= 0) {
@@ -592,7 +604,6 @@
             const floatBtn = document.getElementById('floating-gift-btn');
             if(floatBtn) floatBtn.style.display = 'none';
             
-            // 更換為常態商城的標題與文案
             document.getElementById('pack-section-title').setAttribute('data-i18n', 'sec3_title_exp');
             document.getElementById('pack-section-subtitle').setAttribute('data-i18n', 'sec3_subtitle_exp');
             document.getElementById('pack-title').setAttribute('data-i18n', 'pack_exp_title');
@@ -686,16 +697,18 @@
             const urlParams = new URLSearchParams(window.location.search);
             const userId = urlParams.get('user_id') || '693d121965e1e17a7f081d74'; 
             let mockRemainingSeconds = null;
+            let isMock7DayMode = false;
 
             if (urlParams.get('test_mode') === 'panic') {
                 mockRemainingSeconds = 3595; 
             } else if (urlParams.get('test_mode') === 'day3') {
-                mockRemainingSeconds = 3 * 86400; 
+                mockRemainingSeconds = 4 * 86400; 
+                isMock7DayMode = true;
             }
 
             if (mockRemainingSeconds !== null) {
                 if (mockRemainingSeconds > 0) {
-                    startCountdown(mockRemainingSeconds);
+                    startCountdown(mockRemainingSeconds, isMock7DayMode);
                 } else {
                     renderExpiredPack();
                 }
@@ -707,23 +720,16 @@
                     
                     if (timeData && typeof timeData.time_diff_seconds === 'number') {
                         const secondsInDay = 86400;
-                        const secondsIn7Days = 7 * secondsInDay;
                         
-                        const ageSeconds = secondsInDay - timeData.time_diff_seconds;
-
-                        let remainingSeconds = 0;
-                        if (ageSeconds < secondsInDay) {
-                            remainingSeconds = timeData.time_diff_seconds; 
-                        } else if (ageSeconds < secondsIn7Days) {
-                            remainingSeconds = secondsIn7Days - ageSeconds; 
+                        if (timeData.time_diff_seconds > 0) {
+                            startCountdown(timeData.time_diff_seconds, false);
                         } else {
-                            remainingSeconds = 0; 
-                        }
-
-                        if (remainingSeconds > 0) {
-                            startCountdown(remainingSeconds);
-                        } else {
-                            renderExpiredPack(); 
+                            const remainingTo7Days = timeData.time_diff_seconds + (6 * secondsInDay);
+                            if (remainingTo7Days > 0) {
+                                startCountdown(remainingTo7Days, true);
+                            } else {
+                                renderExpiredPack(); 
+                            }
                         }
                     } else {
                         renderExpiredPack(); 
