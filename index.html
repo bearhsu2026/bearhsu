@@ -120,9 +120,8 @@
         .banner-card.purple { border-color: rgba(157, 42, 255, 0.3); background: linear-gradient(135deg, rgba(157, 42, 255, 0.1), rgba(24, 24, 27, 0.8)); }
         
         .promo-highlight { color: #ffd700; font-size: 1.1rem; font-weight: 900; }
-        /* 優化 Badge 樣式避免換行 */
         .promo-badge { background: #ff2a5f; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: 800; margin-left: 6px; white-space: nowrap; display: inline-block; vertical-align: middle; }
-        .disclaimer-text { font-size: 0.75rem; color: var(--text-muted); margin: 12px 0; }
+        .disclaimer-text { font-size: 0.8rem; color: var(--text-muted); margin: 12px 0; line-height: 1.4; }
         
         .pass-header-wrapper { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
         .pass-title { color: #ffd700; font-weight: 800; font-size: 1rem; }
@@ -203,11 +202,10 @@
         }
         @keyframes scroll-shine { from { left: -75%; } to { left: 100%; } }
 
-        /* 【新增】懸浮禮物按鈕 */
         .floating-gift-btn {
             position: fixed;
             right: 20px;
-            bottom: 95px; /* 位於底部 CTA 之上 */
+            bottom: 95px; 
             background: linear-gradient(135deg, #ff2a5f, #ff7e40);
             color: #fff;
             padding: 8px 14px;
@@ -313,7 +311,8 @@
 
             <div class="section-title title-pack">
                 <div class="title-header" data-i18n="sec3_title" id="pack-section-title"></div>
-                <div class="section-desc" data-i18n="sec3_subtitle"></div> </div>
+                <div class="section-desc" data-i18n="sec3_subtitle" id="pack-section-subtitle"></div>
+            </div>
             <div class="banner-card gold" data-glow-target="newbie-btn" id="pack-card">
                 <div id="countdown-box" class="countdown-box" style="display: none;"></div>
                 
@@ -350,7 +349,7 @@
 
     <div class="cta-wrapper" id="cta-wrapper" data-glow-target="main-cta-btn">
         <button class="cta-btn scroll-glow" id="main-cta-btn" onclick="handleMainCTAClick()" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <span data-i18n="main_cta">前往任務活動領取</span>
+            <span data-i18n="main_cta">天天免費領取</span>
             <img src="https://swag.live/static/img/ic_diamond_sm.cf6904ca.svg" alt="diamond" style="width: 22px; height: 22px; margin-top: -2px;">
             <span>20</span>
         </button>
@@ -392,8 +391,10 @@
                 main_cta: '天天免費領取',
                 floating_gift: '新手禮包',
                 fomo_prefix: '還剩下 ', fomo_d: '天 ', fomo_h: '時 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購買機會',
+                
                 sec3_title_exp: '💎 鑽石限量禮包',
-                pack_exp_title: '日/週/月超值購！', pack_exp_badge: '最高8%折扣', pack_exp_desc: '每日上午8:00重置', pack_exp_btn: '購買限量禮包'
+                sec3_subtitle_exp: '老司機也有專屬優惠，補充鑽石超簡單！',
+                pack_exp_title: '日/週/月超值購！', pack_exp_badge: '最高享8%折扣', pack_exp_desc: '以上皆於每日/每週一/每月1號上午8:00重置購買資格', pack_exp_btn: '購買限量禮包'
             },
             'zh-CN': { 
                 title: '第一次玩 SWAG 就上手', subtitle: '快速通关秘笈大公开，马上晋升懂玩老手！', 
@@ -429,8 +430,10 @@
                 main_cta: '天天免费领取',
                 floating_gift: '新手礼包',
                 fomo_prefix: '还剩下 ', fomo_d: '天 ', fomo_h: '时 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 购买机会',
+                
                 sec3_title_exp: '💎 钻石限量礼包',
-                pack_exp_title: '日/周/月超值购！', pack_exp_badge: '最高8%折扣', pack_exp_desc: '每日上午8:00重置', pack_exp_btn: '购买限量礼包'
+                sec3_subtitle_exp: '老司机也有专属优惠，补充钻石超简单！',
+                pack_exp_title: '日/周/月超值购！', pack_exp_badge: '最高享8%折扣', pack_exp_desc: '以上皆于每日/每周一/每月1号上午8:00重置购买资格', pack_exp_btn: '购买限量礼包'
             },
             'en': { 
                 title: 'Get Started with SWAG', subtitle: 'Fast track to become a pro explorer!', 
@@ -466,8 +469,10 @@
                 main_cta: 'Claim Free Daily',
                 floating_gift: 'Newbie Pack',
                 fomo_prefix: 'Only ', fomo_d: 'd ', fomo_h: 'h ', fomo_m: 'm ', fomo_s: 's ', fomo_suffix: ' left to buy!',
+                
                 sec3_title_exp: '💎 Limited Diamond Pack',
-                pack_exp_title: 'Daily/Weekly/Monthly Value Packs!', pack_exp_badge: 'Up to 8% off', pack_exp_desc: 'Resets daily at 8:00 AM', pack_exp_btn: 'Buy Limited Pack'
+                sec3_subtitle_exp: 'Exclusive offers for pros, top up your diamonds easily!',
+                pack_exp_title: 'Daily/Weekly/Monthly Packs!', pack_exp_badge: 'Up to 8% off', pack_exp_desc: 'Resets at 8:00 AM daily, on Mondays, or on the 1st of the month.', pack_exp_btn: 'Buy Limited Pack'
             },
             'ja': { 
                 title: 'SWAGの始め方ガイド', subtitle: '初心者向けガイド、すぐにプロの仲間入り！', 
@@ -505,7 +510,8 @@
                 fomo_prefix: '残り ', fomo_d: '日 ', fomo_h: '時間 ', fomo_m: '分 ', fomo_s: '秒 ', fomo_suffix: ' 購入チャンス',
                 
                 sec3_title_exp: '💎 限定ダイヤパック',
-                pack_exp_title: '日/週/月替わりパック！', pack_exp_badge: '最大8%オフ', pack_exp_desc: '毎日午前8:00にリセット', pack_exp_btn: '限定パックを購入'
+                sec3_subtitle_exp: 'プロ限定のお得なオファー！ダイヤの補充も簡単！',
+                pack_exp_title: '日/週/月替わりパック！', pack_exp_badge: '最大8%オフ', pack_exp_desc: '毎日/毎週月曜/毎月1日の午前8:00にリセットされます', pack_exp_btn: '限定パックを購入'
             }
         };
 
@@ -519,7 +525,6 @@
             });
         }
 
-        // 點擊懸浮禮物跳至對應區塊
         function scrollToPack() {
             const packSection = document.getElementById('pack-section-title');
             if (packSection) packSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -545,7 +550,7 @@
             
             box.style.display = 'inline-block';
             warningText.style.display = 'block'; 
-            floatBtn.style.display = 'flex'; // 顯示懸浮按鈕
+            floatBtn.style.display = 'flex'; 
             
             countdownInterval = setInterval(() => {
                 if (seconds <= 0) {
@@ -567,7 +572,6 @@
                 const lang = document.getElementById('langSelect').value;
                 const t = T[lang] || T['zh-TW'];
                 
-                // 若包含天數則顯示天數，否則僅顯示時分秒
                 let timeStr = '';
                 if (d > 0) {
                     timeStr = `<span class="fomo-num">${d}</span>${t.fomo_d}<span class="fomo-num">${String(h).padStart(2,'0')}</span>${t.fomo_h}<span class="fomo-num">${String(m).padStart(2,'0')}</span>${t.fomo_m}<span class="fomo-num">${String(s).padStart(2,'0')}</span>${t.fomo_s}`;
@@ -585,11 +589,12 @@
             document.getElementById('pack-warning').style.display = 'none'; 
             document.getElementById('pack-card').classList.remove('panic-mode'); 
             
-            // 隱藏懸浮按鈕
             const floatBtn = document.getElementById('floating-gift-btn');
             if(floatBtn) floatBtn.style.display = 'none';
             
+            // 更換為常態商城的標題與文案
             document.getElementById('pack-section-title').setAttribute('data-i18n', 'sec3_title_exp');
+            document.getElementById('pack-section-subtitle').setAttribute('data-i18n', 'sec3_subtitle_exp');
             document.getElementById('pack-title').setAttribute('data-i18n', 'pack_exp_title');
             document.getElementById('pack-badge').setAttribute('data-i18n', 'pack_exp_badge');
             document.getElementById('pack-desc').setAttribute('data-i18n', 'pack_exp_desc');
@@ -678,15 +683,14 @@
                 document.getElementById('section-hot-videos').style.display = 'none';
             }
 
-            // 【已更新】24小時 / 7日 API 雙段倒數邏輯判斷
             const urlParams = new URLSearchParams(window.location.search);
             const userId = urlParams.get('user_id') || '693d121965e1e17a7f081d74'; 
             let mockRemainingSeconds = null;
 
             if (urlParams.get('test_mode') === 'panic') {
-                mockRemainingSeconds = 3595; // 模擬最後一小時
+                mockRemainingSeconds = 3595; 
             } else if (urlParams.get('test_mode') === 'day3') {
-                mockRemainingSeconds = 3 * 86400; // 模擬剩餘 3 天
+                mockRemainingSeconds = 3 * 86400; 
             }
 
             if (mockRemainingSeconds !== null) {
@@ -705,18 +709,14 @@
                         const secondsInDay = 86400;
                         const secondsIn7Days = 7 * secondsInDay;
                         
-                        // time_diff_seconds 是距離 24 小時的剩餘時間，推算註冊後經過的秒數
                         const ageSeconds = secondsInDay - timeData.time_diff_seconds;
 
                         let remainingSeconds = 0;
                         if (ageSeconds < secondsInDay) {
-                            // 註冊未滿 1 日：倒數至 24 小時
                             remainingSeconds = timeData.time_diff_seconds; 
                         } else if (ageSeconds < secondsIn7Days) {
-                            // 註冊滿 1 日且未滿 7 日：倒數至 7 日
                             remainingSeconds = secondsIn7Days - ageSeconds; 
                         } else {
-                            // 超過 7 日：結束倒數
                             remainingSeconds = 0; 
                         }
 
