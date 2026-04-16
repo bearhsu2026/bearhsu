@@ -225,6 +225,20 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
+
+        /* 【新增】新手 7 日任務 Banner 樣式 */
+        #nu-quest-link {
+            display: block; 
+            width: 100%; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid var(--glass-border); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+            transition: transform 0.2s;
+        }
+        #nu-quest-link:active {
+            transform: scale(0.98);
+        }
     </style>
 </head>
 <body>
@@ -252,6 +266,12 @@
                     <button class="nav-btn nav-right" onclick="scrollCarousel('creator-list', 1)">&#10095;</button>
                 </div>
                 <div class="section-divider"></div>
+            </div>
+
+            <div id="section-nu-quest" style="display: none; margin-bottom: 24px;">
+                <a href="#" id="nu-quest-link" target="_blank">
+                    <img src="https://public.swag.live/notifications/custom/CY/nu_quest_hb_tc.png" alt="7 Day Quest" style="width: 100%; display: block; object-fit: cover;">
+                </a>
             </div>
 
             <div id="section-free-videos">
@@ -534,6 +554,17 @@
             if (packSection) packSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
+        // 【新增】控制 7 日任務 Banner 的顯示與 URL 替換
+        function showNuQuestBanner(userId) {
+            const bannerSec = document.getElementById('section-nu-quest');
+            const bannerLink = document.getElementById('nu-quest-link');
+            if(bannerSec && bannerLink) {
+                bannerSec.style.display = 'block';
+                const baseUrl = 'https://swag.live/iframe/?source=https://lookerstudio.google.com/embed/reporting/7636ed36-0c9c-4d3d-9fc6-e33824988c5f/page/d6nfD?params={%22ds29.hash_id%22:%22{USER_ID}%22}&title=iframe_viewer_header';
+                bannerLink.href = baseUrl.replace('{USER_ID}', userId);
+            }
+        }
+
         function renderSkeletons(containerId, type, count) {
             const c = document.getElementById(containerId);
             c.innerHTML = '';
@@ -603,6 +634,9 @@
             
             const floatBtn = document.getElementById('floating-gift-btn');
             if(floatBtn) floatBtn.style.display = 'none';
+            
+            const nuQuestBanner = document.getElementById('section-nu-quest');
+            if(nuQuestBanner) nuQuestBanner.style.display = 'none';
             
             document.getElementById('pack-section-title').setAttribute('data-i18n', 'sec3_title_exp');
             document.getElementById('pack-section-subtitle').setAttribute('data-i18n', 'sec3_subtitle_exp');
@@ -709,6 +743,7 @@
             if (mockRemainingSeconds !== null) {
                 if (mockRemainingSeconds > 0) {
                     startCountdown(mockRemainingSeconds, isMock7DayMode);
+                    showNuQuestBanner(userId); // 測試模式下顯示 Banner
                 } else {
                     renderExpiredPack();
                 }
@@ -722,12 +757,18 @@
                         const secondsInDay = 86400;
                         
                         if (timeData.time_diff_seconds > 0) {
+                            // 剛註冊 ~ 24 小時以內
                             startCountdown(timeData.time_diff_seconds, false);
+                            showNuQuestBanner(userId);
                         } else {
+                            // 計算距離滿 7 日還剩多少秒
                             const remainingTo7Days = timeData.time_diff_seconds + (6 * secondsInDay);
                             if (remainingTo7Days > 0) {
+                                // 滿 24 小時 ~ 滿 7 日前
                                 startCountdown(remainingTo7Days, true);
+                                showNuQuestBanner(userId);
                             } else {
+                                // 註冊已滿 7 日或以上
                                 renderExpiredPack(); 
                             }
                         }
