@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>地方媽媽的深夜派對</title>
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --color-primary: #00D2BE;
+      --color-surface: #191919;
+      --color-surface-container: #232323;
+      --color-surface-variant: rgba(71,71,71,0.4);
+      --color-on-primary-1: #FFFFFF;
+      --color-on-primary-2: #C8C8C8;
+      --color-on-primary-3: #646464;
+      --color-outline: #474747;
+      --color-outline-variant: rgba(71,71,71,0.4);
+      --color-error: #CF0404;
+      --color-preset-gold: #FFA500;
+      --color-preset-pink: #F6418D;
+      --color-success: #34C759; 
+      
+      --font-family: 'PingFang TC', -apple-system, sans-serif;
+      --font-family-fashion: 'Didot', 'Bodoni MT', 'Times New Roman', serif;
+      
+      --font-headline-large: 36px;
+      --font-headline-medium: 32px;
+      --font-headline-small: 28px;
+      --font-title-large: 22px;
+      --font-title-medium: 20px;
+      --font-title-small: 18px;
+      --font-body-large: 16px;
+      --font-body-medium: 15px; 
+      --font-body-small: 13px;  
+
+      --spacing-2: 4px; --spacing-3: 8px; --spacing-4: 12px;
+      --spacing-5: 16px; --spacing-6: 24px; --spacing-7: 32px;
+      
+      --radius-s: 8px; --radius-m: 12px; --radius-l: 16px; --radius-full: 1000px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: var(--font-family); background-color: var(--color-surface); color: var(--color-on-primary-1);
+      background: radial-gradient(circle at 20% 0%, rgba(0, 210, 190, 0.15) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(246, 65, 141, 0.15) 0%, var(--color-surface) 60%);
+      min-height: 100vh; 
+      padding-bottom: 120px; 
+      /* 新增：Webview 安全區域下推，避開 App 原生橫幅遮擋 */
+      padding-top: 80px; 
+      overflow-x: hidden;
+    }
+
+    #bg-effects { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle { position: absolute; top: -10vh; font-size: 14px; opacity: 0.25; filter: blur(1px); animation: fall linear infinite; }
+    @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg) translateX(0); } 100% { transform: translateY(110vh) rotate(360deg) translateX(30px); } }
+
+    .container { max-width: 600px; margin: 0 auto; padding: var(--spacing-5); position: relative; z-index: 1; }
+
+    .lang-group { position: absolute; top: var(--spacing-4); right: var(--spacing-5); display: flex; gap: var(--spacing-2); z-index: 10; }
+    .lang-btn { background: var(--color-surface-container); border: 1px solid transparent; color: var(--color-on-primary-2); padding: 6px 12px; border-radius: var(--radius-full); font-size: 11px; cursor: pointer; transition: all 0.2s; font-weight: bold; }
+    .lang-btn.active { background: rgba(246, 65, 141, 0.15); border-color: var(--color-preset-pink); color: var(--color-preset-pink); }
+
+    .glass-card { position: relative; overflow: hidden; background: rgba(35, 35, 35, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--color-outline-variant); border-radius: var(--radius-l); padding: var(--spacing-5); margin-bottom: var(--spacing-5); box-shadow: inset 0 0 20px rgba(0, 210, 190, 0.02); transition: transform 0.2s ease, border-color 0.2s ease; }
+    
+    .oil-drop { position: absolute; width: 6px; height: 12px; background: rgba(255, 255, 255, 0.25); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; box-shadow: inset -1px -2px 2px rgba(255, 255, 255, 0.5), inset 1px 2px 2px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.2); pointer-events: none; z-index: 0; opacity: 0; }
+    .oil-drop-1 { right: 8%; animation: oilSlideDown 6s infinite 0.5s ease-in; }
+    .oil-drop-2 { left: 12%; width: 5px; height: 10px; animation: oilSlideDown 8s infinite 3s ease-in; }
+    .oil-drop-3 { right: 35%; width: 7px; height: 14px; animation: oilSlideDown 7.5s infinite 5s ease-in; }
+    @keyframes oilSlideDown { 0% { top: -5%; opacity: 0; transform: scaleY(0.8); } 10% { opacity: 1; transform: scaleY(1.2); } 70% { top: 85%; opacity: 0.8; transform: scaleY(1.1); } 80% { top: 95%; opacity: 0; transform: scaleY(0.8); } 100% { top: 95%; opacity: 0; } }
+
+    .header { text-align: center; margin-bottom: var(--spacing-4); position: relative; }
+    .title { font-family: var(--font-family-fashion); font-size: var(--font-headline-medium); font-style: italic; font-weight: 700; background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-preset-pink) 50%, var(--color-primary) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(246, 65, 141, 0.5)); margin-bottom: var(--spacing-2); letter-spacing: 1px; animation: shineText 3s linear infinite; }
+    @keyframes shineText { to { background-position: 200% center; } }
+    
+    .subtitle { font-size: var(--font-body-small); color: var(--color-on-primary-2); margin-bottom: var(--spacing-2); line-height: 1.4; }
+    .date-subtitle { font-size: var(--font-body-small); color: var(--color-on-primary-2); margin-bottom: var(--spacing-4); line-height: 1.4; font-family: var(--font-family-fashion); font-style: italic;}
+    .highlight-pink { color: var(--color-preset-pink); font-weight: 900; display: inline; text-shadow: 0 0 8px rgba(246, 65, 141, 0.6); font-size: 1.1em; position: relative; z-index: 1; }
+
+    .countdown-box { display: inline-flex; align-items: center; justify-content: center; gap: 4px; background: rgba(207, 4, 4, 0.2); border: 1px solid var(--color-error); padding: var(--spacing-2) var(--spacing-4); border-radius: var(--radius-full); font-size: var(--font-body-medium); color: var(--color-on-primary-1); font-weight: bold; transition: all 0.2s; }
+    @keyframes flashRedFOMO { 0% { color: #FF4D4D; text-shadow: 0 0 15px #FF4D4D; transform: scale(1.05); border-color: #FF4D4D; box-shadow: 0 0 15px rgba(255, 77, 77, 0.5); } 100% { color: var(--color-on-primary-1); text-shadow: none; transform: scale(1); border-color: var(--color-error); box-shadow: none;} }
+    .tick-flash { animation: flashRedFOMO 0.4s ease-out; }
+
+    .section-title { font-family: var(--font-family); font-size: var(--font-title-medium); font-weight: 700; color: var(--color-on-primary-1); margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: var(--spacing-3); text-shadow: 0 0 8px rgba(255,255,255,0.2); position: relative; z-index: 1; }
+    .task-rules { list-style: none; background: var(--color-surface-variant); padding: var(--spacing-3) var(--spacing-4); border-radius: var(--radius-m); margin-bottom: var(--spacing-4); border: 1px solid var(--color-outline-variant); position: relative; z-index: 1; }
+    .task-rules li { font-size: var(--font-body-small); color: var(--color-on-primary-2); margin-bottom: var(--spacing-2); line-height: 1.5; position: relative; padding-left: 22px; }
+    .task-rules li::before { content: "👠"; position: absolute; left: 0; top: 0; filter: grayscale(0.5); font-size: 14px; }
+    .task-rules li.notice { color: var(--color-on-primary-3); font-size: 11px; margin-top: var(--spacing-2); margin-bottom: 0; padding-left: 0; }
+    .task-rules li.notice::before { display: none; }
+
+    .reward-showcase { display: flex; justify-content: space-around; margin-bottom: var(--spacing-4); position: relative; z-index: 1; }
+    .reward-item { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-2); filter: grayscale(100%) opacity(0.4); transition: all 0.5s; }
+    
+    .reward-img { width: 60px; height: 60px; object-fit: contain; transition: all 0.5s ease; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); }
+    .reward-item:not(.active) .reward-img { animation: slowPulseImage 2.5s infinite; filter: grayscale(100%) opacity(0.6); }
+    @keyframes slowPulseImage { 0%, 100% { transform: scale(1); filter: grayscale(100%) opacity(0.6); } 50% { transform: scale(0.95); filter: grayscale(100%) opacity(0.4); } }
+    .reward-item.active { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
+    .reward-item.active .reward-img { filter: drop-shadow(0 0 15px rgba(246, 65, 141, 0.6)); }
+    
+    .reward-name { font-family: var(--font-family-fashion); font-style: italic; font-size: var(--font-body-small); color: var(--color-on-primary-2); font-weight: 500; }
+    .reward-item.active .reward-name { color: var(--color-preset-gold); font-weight: bold; text-shadow: 0 0 8px rgba(255, 165, 0, 0.4); }
+
+    .progress-wrapper { margin-bottom: var(--spacing-4); position: relative; z-index: 1; }
+    .progress-labels { display: flex; justify-content: space-between; font-size: var(--font-body-small); color: var(--color-on-primary-3); margin-bottom: var(--spacing-2); padding: 0 var(--spacing-2); }
+    .progress-container { background: var(--color-surface-container); height: 12px; border-radius: var(--radius-full); overflow: hidden; border: 1px solid var(--color-outline-variant); }
+    
+    .progress-bar { 
+      position: relative; overflow: hidden; height: 100%; width: 0%; border-radius: var(--radius-full); transition: width 1s ease-in-out;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-preset-pink), var(--color-preset-gold), var(--color-preset-pink), var(--color-primary)); 
+      background-size: 200% 100%; box-shadow: 0 0 10px rgba(246, 65, 141, 0.5); animation: progressFlow 2s linear infinite;
+    }
+    @keyframes progressFlow { 0% { background-position: 200% 0; } 100% { background-position: 0 0; } }
+    .progress-bar::after {
+      content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+      transform: skewX(-20deg); animation: chargeShine 1.5s infinite;
+    }
+    @keyframes chargeShine { 0% { left: -100%; } 100% { left: 200%; } }
+
+    .my-command-cost { text-align: center; font-size: var(--font-body-medium); color: var(--color-on-primary-1); position: relative; z-index: 1; }
+    .highlight-gold { color: var(--color-preset-gold); font-weight: bold; font-size: var(--font-title-large); text-shadow: 0 0 8px rgba(255, 165, 0, 0.3); }
+
+    .gift-carousel-wrapper { overflow: hidden; width: 100%; position: relative; margin-bottom: var(--spacing-5); z-index: 1; }
+    .gift-track { display: flex; gap: var(--spacing-3); width: max-content; animation: infiniteScroll 15s linear infinite; }
+    .gift-track:hover, .gift-track:active, .gift-track:focus-within { animation-play-state: paused; }
+    @keyframes infiniteScroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 4px)); } }
+    .gift-card { width: 110px; flex-shrink: 0; background: var(--color-surface-container); border-radius: var(--radius-m); padding: var(--spacing-4) var(--spacing-2); text-align: center; position: relative; border: 1px solid var(--color-outline-variant); overflow: hidden; cursor: pointer; user-select: none; }
+    .gift-card img { width: 45px; height: 45px; object-fit: contain; margin-bottom: var(--spacing-2); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); pointer-events: none; }
+    .gift-name-ch { font-size: var(--font-body-small); color: var(--color-on-primary-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; pointer-events: none; }
+    .gift-name-en { font-size: 10px; color: var(--color-on-primary-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: var(--spacing-2); font-family: var(--font-family-fashion); font-style: italic; pointer-events: none; }
+    .gift-price { font-size: var(--font-body-small); color: var(--color-primary); font-weight: bold; pointer-events: none; }
+    .gift-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(25, 25, 25, 0.85); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .gift-card.show-mask .gift-overlay { opacity: 1; pointer-events: auto; }
+    .cta-btn { background: linear-gradient(45deg, var(--color-preset-pink), var(--color-preset-gold)); color: #FFF; text-decoration: none; padding: var(--spacing-2) var(--spacing-4); border-radius: var(--radius-full); font-size: var(--font-body-small); font-weight: bold; box-shadow: 0 0 10px rgba(246, 65, 141, 0.5); }
+
+    .badge-preview-header { font-size: var(--font-body-medium); color: var(--color-on-primary-1); margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 8px; font-weight: bold; position: relative; z-index: 1; }
+    .badge-preview-header::before { content: ""; display: inline-block; width: 4px; height: 16px; background: var(--color-preset-gold); border-radius: 2px; }
+    .badge-showcase-1x3 { display: flex; justify-content: space-between; gap: var(--spacing-2); margin-bottom: var(--spacing-6); position: relative; z-index: 1; }
+    .badge-box { flex: 1; background: var(--color-surface-container); border: 1px solid var(--color-outline-variant); border-radius: var(--radius-s); padding: var(--spacing-4) 2px; text-align: center; cursor: pointer; transition: border-color 0.3s, transform 0.2s; }
+    .badge-box:active { transform: scale(0.95); border-color: var(--color-primary); }
+    
+    .badge-svg { width: 75px; height: 75px; object-fit: contain; margin: 0 auto var(--spacing-3); display: block; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); transition: transform 0.3s ease; }
+    .badge-box:hover .badge-svg { transform: scale(1.1); }
+    
+    .badge-tier { font-size: 11px; color: var(--color-preset-gold); font-family: var(--font-family-fashion); font-weight: bold; margin-bottom: 2px;}
+    .badge-title-text { font-size: 12px; color: var(--color-on-primary-2); white-space: nowrap; transform: scale(0.95); font-weight: bold;}
+
+    .update-notice { font-size: var(--font-body-small); color: var(--color-on-primary-3); text-align: right; margin-bottom: var(--spacing-3); position: relative; z-index: 1; }
+    .leaderboard-list { display: flex; flex-direction: column; gap: var(--spacing-3); position: relative; z-index: 1; }
+    @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+    .lb-item { display: flex; align-items: center; justify-content: space-between; background: var(--color-surface-container); padding: var(--spacing-3) var(--spacing-4); border-radius: var(--radius-m); border: 1px solid transparent; animation: slideUpFade 0.4s ease forwards; opacity: 0; }
+    .lb-item.is-me { border-color: var(--color-primary); background: rgba(0, 210, 190, 0.05); }
+    .lb-rank { width: 35px; font-family: var(--font-family-fashion); font-size: var(--font-title-medium); font-weight: bold; color: var(--color-on-primary-2); font-style: italic; }
+    .rank-1 .lb-rank { color: var(--color-preset-gold); text-shadow: 0 0 8px rgba(255,165,0,0.5); }
+    .rank-2 .lb-rank, .rank-3 .lb-rank { color: var(--color-on-primary-1); }
+    .lb-info-row { display: flex; align-items: center; flex: 1; gap: var(--spacing-2); overflow: hidden; }
+    .lb-name { font-size: var(--font-body-medium); font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
+    .vip-tag { background: linear-gradient(135deg, #444, #111); border: 1px solid var(--color-preset-gold); color: var(--color-preset-gold); padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 900; white-space: nowrap; transform: translateY(-1px); box-shadow: 0 0 5px rgba(255, 165, 0, 0.2); }
+    .lb-score { font-family: var(--font-family-fashion); font-size: var(--font-body-large); color: var(--color-preset-pink); font-weight: bold; font-style: italic; white-space: nowrap; margin-left: var(--spacing-2); }
+    .expand-btn { background: transparent; border: 1px solid var(--color-outline); color: var(--color-on-primary-2); padding: var(--spacing-3); width: 100%; border-radius: var(--radius-full); font-size: var(--font-body-medium); cursor: pointer; margin-top: var(--spacing-3); transition: all 0.3s; position: relative; z-index: 1; }
+    .expand-btn:active { background: var(--color-surface-variant); }
+
+    .disclaimer { text-align: center; font-size: 11px; color: var(--color-on-primary-3); margin-top: var(--spacing-7); margin-bottom: var(--spacing-4); line-height: 1.5; padding: 0 var(--spacing-6); }
+
+    .sticky-bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 100; background: rgba(30, 30, 30, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--color-preset-pink); box-shadow: 0 -4px 15px rgba(246, 65, 141, 0.15); padding: var(--spacing-4) var(--spacing-5); display: flex; align-items: center; justify-content: space-between; padding-bottom: calc(var(--spacing-4) + env(safe-area-inset-bottom)); }
+    .sticky-left { display: flex; align-items: center; gap: var(--spacing-4); flex: 1; overflow: hidden;}
+    .my-rank-label { font-size: var(--font-body-medium); color: var(--color-on-primary-2); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .my-rank-num { font-size: var(--font-title-medium); font-family: var(--font-family-fashion); color: var(--color-preset-pink); font-style: italic; font-weight: bold; }
+    .my-user-info { display: flex; align-items: center; gap: 8px; overflow: hidden; }
+    .sticky-name { font-size: var(--font-body-medium); font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
+    .sticky-score { font-family: var(--font-family-fashion); font-size: var(--font-title-medium); color: var(--color-primary); font-weight: bold; white-space: nowrap; }
+    .empty-state-text { font-size: clamp(11px, 3.5vw, var(--font-body-medium)); color: var(--color-on-primary-3); flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .modal-overlay.show { opacity: 1; pointer-events: auto; }
+    .modal-content { background: rgba(35, 35, 35, 0.95); border: 1px solid var(--color-primary); box-shadow: 0 0 20px rgba(0, 210, 190, 0.3); border-radius: var(--radius-l); padding: var(--spacing-6); width: 80%; max-width: 320px; text-align: center; transform: translateY(20px); transition: transform 0.3s ease; }
+    .modal-overlay.show .modal-content { transform: translateY(0); }
+    
+    .modal-badge-icon { width: 80px; height: 80px; object-fit: contain; margin: 0 auto var(--spacing-4); display: none; filter: drop-shadow(0 0 15px rgba(255, 165, 0, 0.4)); animation: floatBadge 3s ease-in-out infinite; }
+    @keyframes floatBadge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    .modal-title { font-size: var(--font-title-medium); color: var(--color-preset-gold); margin-bottom: var(--spacing-3); font-weight: bold; }
+    .modal-desc { font-size: var(--font-body-medium); color: var(--color-on-primary-1); margin-bottom: var(--spacing-5); line-height: 1.5; }
+    .modal-close { background: var(--color-surface-variant); border: 1px solid var(--color-outline); color: var(--color-on-primary-1); padding: var(--spacing-2) var(--spacing-6); border-radius: var(--radius-full); cursor: pointer; font-size: var(--font-body-medium); }
+
+    .skeleton { background: linear-gradient(90deg, var(--color-surface-container) 25%, var(--color-surface-variant) 50%, var(--color-surface-container) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: var(--radius-s); color: transparent !important; }
+    @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* ══════ 惡搞彩蛋專屬 CSS ══════ */
+    .ios-call-banner {
+      /* 修改點：下移避開原生橫幅遮擋 */
+      position: fixed; top: -100px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px;
+      background: rgba(35, 35, 35, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px; padding: var(--spacing-4); display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .ios-call-banner.show { top: 110px; } /* 安全區域 */
+    .ios-call-banner.shake { animation: callShake 0.1s infinite; }
+    @keyframes callShake { 0% { transform: translateX(calc(-50% - 2px)); } 50% { transform: translateX(calc(-50% + 2px)); } 100% { transform: translateX(-50%); } }
+    
+    .call-info { display: flex; align-items: center; gap: var(--spacing-3); }
+    .call-avatar { width: 45px; height: 45px; border-radius: 50%; background: var(--color-preset-pink); display: flex; align-items: center; justify-content: center; font-size: 20px; border: 2px solid rgba(255,255,255,0.2); }
+    .call-text-box { display: flex; flex-direction: column; }
+    .call-name { font-size: var(--font-body-large); font-weight: bold; color: var(--color-on-primary-1); }
+    .call-sub { font-size: var(--font-body-small); color: var(--color-on-primary-2); }
+    
+    .call-answer-btn {
+      background: var(--color-success); border: none; width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; color: #FFF; font-size: 18px;
+      animation: answerPulse 1.5s infinite;
+    }
+    @keyframes answerPulse { 0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); } }
+
+    .in-call-screen {
+      position: fixed; inset: 0; background: rgba(15,15,15,0.98); backdrop-filter: blur(20px);
+      z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      padding: 60px 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .in-call-screen.active { opacity: 1; pointer-events: auto; }
+    
+    /* 修改點：頭像往下移，避開上方遮擋 */
+    .in-call-top { text-align: center; margin-top: 15vh; }
+    .in-call-avatar-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto var(--spacing-4); }
+    .in-call-avatar { width: 100%; height: 100%; border-radius: 50%; background: var(--color-preset-pink); display: flex; align-items: center; justify-content: center; font-size: 50px; position: relative; z-index: 2; border: 4px solid #FFF; }
+    .radar-wave { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--color-preset-pink); z-index: 1; animation: radarRipple 2s infinite ease-out; }
+    .radar-wave:nth-child(2) { animation-delay: 1s; }
+    @keyframes radarRipple { 0% { width: 100%; height: 100%; opacity: 1; } 100% { width: 250%; height: 250%; opacity: 0; } }
+    
+    .in-call-name { font-size: var(--font-headline-small); font-weight: bold; margin-bottom: var(--spacing-2); }
+    .in-call-timer { font-size: var(--font-body-large); color: var(--color-on-primary-2); }
+    
+    .in-call-hangup {
+      background: var(--color-error); border: none; width: 70px; height: 70px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; color: #FFF; font-size: 32px;
+      margin-bottom: 5vh; transition: transform 0.2s;
+    }
+    .in-call-hangup:active { transform: scale(0.9); }
+  </style>
+</head>
+<body>
+  <div id="bg-effects"></div>
+
+  <div class="container">
+    <div class="lang-group">
+      <button class="lang-btn active" onclick="changeLang('zh-TW', this)">繁中</button>
+      <button class="lang-btn" onclick="changeLang('zh-CN', this)">简中</button>
+      <button class="lang-btn" onclick="changeLang('en', this)">EN</button>
+      <button class="lang-btn" onclick="changeLang('ja', this)">日本語</button>
+    </div>
+
+    <div class="header">
+      <div class="title" data-i18n="title">地方媽媽的深夜派對</div>
+      <div class="subtitle" data-i18n="subtitle">用鑽石表達最深的感謝，讓媽媽知道你有多愛她</div>
+      <div class="date-subtitle">2026/05/08 00:00 - 2026/05/10 23:59(GMT+8)</div>
+      <div class="countdown-box" id="countdown-container">
+        <span id="countdown">⏳ 載入中...</span>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div class="oil-drop oil-drop-1"></div>
+      <div class="oil-drop oil-drop-2"></div>
+      <div class="oil-drop oil-drop-3"></div>
+
+      <div class="section-title">💄 <span data-i18n="sec1_title">【深層按摩】專屬進度</span></div>
+      <ul class="task-rules">
+        <li data-i18n="sec1_rule1">任務 1. 直播間挑逗表演 / 玩具指令滿萬鑽解鎖 <span class="highlight-pink">「金牌按摩師」</span> 成就徽章。</li>
+        <li data-i18n="sec1_rule2">任務 2. 耗鑽滿 66666 鑽享 <span class="highlight-pink">「6666 鑽石回饋」</span>。</li>
+        <li class="notice" data-i18n="sec1_rule_note">* 以上獎項將於耗鑽達成 5 分鐘自動派發。</li>
+      </ul>
+      <div class="reward-showcase">
+        <div class="reward-item" id="reward-badge">
+          <img src="https://public.swag.live/badges/campaign_massager.svg" class="reward-img" alt="金牌按摩師">
+          <div class="reward-name" data-i18n="reward_badge_name">金牌按摩師</div>
+        </div>
+        <div class="reward-item" id="reward-diamond">
+          <img src="https://public.swag.live/products/18599_diamonds_from_limited_week_v2.png" class="reward-img" alt="6666鑽">
+          <div class="reward-name">6666 💎</div>
+        </div>
+      </div>
+      <div class="progress-wrapper">
+        <div class="progress-labels"><span>0</span><span>66.6K</span></div>
+        <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+      <div class="my-command-cost">
+        <span data-i18n="my_command">我目前已消耗</span>：
+        <span class="highlight-gold skeleton" id="myCommandScore">0</span> 💎
+      </div>
+    </div>
+
+    <div class="glass-card" id="giftSection">
+      <div class="section-title">👜 <span data-i18n="sec2_title">【母親節送禮大賞】說愛妳排名賽</span></div>
+      <ul class="task-rules">
+        <li data-i18n="sec2_rule1">於直播間及聊天室贈送 <span class="highlight-pink">「520說愛妳」</span> 系列禮物，即可參與排名賽。</li>
+        <li data-i18n="sec2_rule2">贈送指定系列禮物最多的前 50 名用戶，即可解鎖對應徽章。</li>
+        <li class="notice" data-i18n="sec2_rule_note">* 最終排名以活動結束時為準，徽章獎勵將於 5 個工作天內發放。</li>
+      </ul>
+
+      <div class="gift-carousel-wrapper">
+        <div class="gift-track" id="giftTrack"></div>
+      </div>
+
+      <div class="badge-preview-header" data-i18n="badge_preview_title">尊榮徽章預覽</div>
+      <div class="badge-showcase-1x3">
+        <div class="badge-box" onclick="openBadgeModal(1)">
+          <img src="https://public.swag.live/badges/campaign_goodson.svg" class="badge-svg" alt="國民好兒子">
+          <div class="badge-tier">TOP 1</div>
+          <div class="badge-title-text" data-i18n="badge_1_name">國民好兒子</div>
+        </div>
+        <div class="badge-box" onclick="openBadgeModal(2)">
+          <img src="https://public.swag.live/badges/campaign_goodbaby.svg" class="badge-svg" alt="媽媽的乖寶貝">
+          <div class="badge-tier">TOP 2-10</div>
+          <div class="badge-title-text" data-i18n="badge_2_name">媽媽的乖寶貝</div>
+        </div>
+        <div class="badge-box" onclick="openBadgeModal(3)">
+          <img src="https://public.swag.live/badges/campaign_adoptedson.svg" class="badge-svg" alt="乖巧養子">
+          <div class="badge-tier">TOP 11-50</div>
+          <div class="badge-title-text" data-i18n="badge_3_name">乖巧養子</div>
+        </div>
+      </div>
+
+      <div class="update-notice" data-i18n="update_notice">※ 排行榜每 5 分鐘更新一次</div>
+      
+      <div class="leaderboard-list" id="leaderboardList">
+        <div class="lb-item" style="opacity: 1; animation: none;"><div class="lb-rank skeleton">0</div><div class="lb-info-row"><div class="lb-name skeleton" style="width: 100px;">Loading</div></div><div class="lb-score skeleton" style="width: 40px;">000</div></div>
+      </div>
+      <button class="expand-btn" id="expandBtn" style="display: none;" onclick="expandLeaderboard()" data-i18n="expand_btn">顯示更多排名 ▾</button>
+    </div>
+
+    <div class="disclaimer" data-i18n="disclaimer">SWAG 保留隨時修改、終止活動之權利。</div>
+  </div>
+
+  <div class="sticky-bottom-bar" id="stickyFooter"></div>
+
+  <div class="modal-overlay" id="badgeModal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <img id="modalIcon" src="" class="modal-badge-icon" alt="Badge">
+      <div class="modal-title" id="modalTitle">標題</div>
+      <div class="modal-desc" id="modalDesc">描述</div>
+      <button class="modal-close" onclick="closeModal()" data-i18n="modal_btn">我知道了</button>
+    </div>
+  </div>
+
+  <audio id="prankAudio" src="https://public.swag.live/notifications/custom/bear/momday/momday_chinese.mp3" preload="auto"></audio>
+
+  <div id="iosCallBanner" class="ios-call-banner">
+    <div class="call-info">
+      <div class="call-avatar">💋</div>
+      <div class="call-text-box">
+        <span class="call-name" data-i18n="call_name">地方媽媽 💋</span>
+        <span class="call-sub" data-i18n="call_sub">行動電話</span>
+      </div>
+    </div>
+    <button class="call-answer-btn" id="answerBtn">📞</button>
+  </div>
+
+  <div id="inCallScreen" class="in-call-screen">
+    <div class="in-call-top">
+      <div class="in-call-avatar-wrap">
+        <div class="radar-wave"></div>
+        <div class="radar-wave"></div>
+        <div class="in-call-avatar">💋</div>
+      </div>
+      <div class="in-call-name" data-i18n="call_name">地方媽媽 💋</div>
+      <div class="in-call-timer" id="callTimer">00:00</div>
+    </div>
+    <button class="in-call-hangup" id="hangupBtn">☎️</button>
+  </div>
+
+  <script>
+    /* ══════ 惡搞彩蛋控制邏輯 ══════ */
+    let callTimerInterval;
+    let callSeconds = 0;
+    const audioEl = document.getElementById('prankAudio');
+
+    setTimeout(() => {
+      const banner = document.getElementById('iosCallBanner');
+      banner.classList.add('show', 'shake');
+      if (navigator.vibrate) navigator.vibrate([500, 500, 500, 500]);
+    }, 5000);
+
+    document.getElementById('answerBtn').addEventListener('click', () => {
+      document.getElementById('iosCallBanner').classList.remove('show', 'shake');
+      if (navigator.vibrate) navigator.vibrate(0);
+      document.getElementById('inCallScreen').classList.add('active');
+      audioEl.volume = 1;
+      audioEl.play().catch(e => console.log('Audio play failed:', e));
+      callSeconds = 0;
+      document.getElementById('callTimer').textContent = "00:00";
+      callTimerInterval = setInterval(() => {
+        callSeconds++;
+        const m = Math.floor(callSeconds / 60).toString().padStart(2, '0');
+        const s = (callSeconds % 60).toString().padStart(2, '0');
+        document.getElementById('callTimer').textContent = `${m}:${s}`;
+      }, 1000);
+    });
+
+    audioEl.addEventListener('ended', endCall);
+    document.getElementById('hangupBtn').addEventListener('click', endCall);
+
+    function endCall() {
+      clearInterval(callTimerInterval);
+      audioEl.pause();
+      audioEl.currentTime = 0;
+      document.getElementById('inCallScreen').classList.remove('active');
+    }
+    /* ══════ / 惡搞彩蛋控制邏輯 ══════ */
+
+    function createParticles() {
+      const bg = document.getElementById('bg-effects');
+      const symbols = ['🌸', '💖', '💄', '✨'];
+      for(let i = 0; i < 15; i++) {
+        let p = document.createElement('div');
+        p.className = 'particle';
+        p.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.animationDuration = (Math.random() * 5 + 5) + 's'; 
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        p.style.fontSize = (Math.random() * 10 + 12) + 'px'; 
+        bg.appendChild(p);
+      }
+    }
+    createParticles();
+
+    /* 全面升級版多語系字典 */
+    const i18n = {
+      "zh-TW": { 
+        title: "地方媽媽的深夜派對", subtitle: "用鑽石表達最深的感謝，讓媽媽知道你有多愛她", countdown_prefix: "🔥 倒數：", countdown_end: "派對已結束", sec1_title: "【深層按摩】專屬進度",
+        sec1_rule1: "任務 1. 直播間挑逗表演 / 玩具指令滿萬鑽解鎖 <span class='highlight-pink'>「金牌按摩師」</span> 成就徽章。",
+        sec1_rule2: "任務 2. 耗鑽滿 66666 鑽享 <span class='highlight-pink'>「6666 鑽石回饋」</span>。",
+        sec1_rule_note: "* 以上獎項將於耗鑽達成 5 分鐘自動派發。",
+        reward_badge_name: "金牌按摩師",
+        sec2_title: "【母親節送禮大賞】說愛妳排名賽",
+        sec2_rule1: "於直播間及聊天室贈送 <span class='highlight-pink'>「520說愛妳」</span> 系列禮物，即可參與排名賽。",
+        sec2_rule2: "贈送指定系列禮物最多的前 50 名用戶，即可解鎖對應徽章。",
+        sec2_rule_note: "* 最終排名以活動結束時為準，徽章獎勵將於 5 個工作天內發放。",
+        badge_preview_title: "尊榮徽章預覽", badge_1_name: "國民好兒子", badge_2_name: "媽媽的乖寶貝", badge_3_name: "乖巧養子",
+        badge_1_desc: "母親節送禮排行榜 第一名 獲得", badge_2_desc: "母親節送禮排行榜 第 2 ~ 10 名 獲得", badge_3_desc: "母親節送禮排行榜 第 11 ~ 50 名 獲得",
+        update_notice: "※ 排行榜每 5 分鐘更新一次", my_command: "我目前已消耗", expand_btn: "顯示更多排名 ▾",
+        my_rank_label: "我的名次", unranked: "未入榜", not_participated: "尚未參與，快送出第一個禮物 🌸", modal_btn: "我知道了",
+        call_name: "地方媽媽 💋", call_sub: "行動電話", gift_btn: "送禮去",
+        disclaimer: "SWAG 保留隨時修改、終止活動之權利。",
+        anonymous: "匿名用戶"
+      },
+      "zh-CN": { 
+        title: "地方妈妈的深夜派对", subtitle: "用钻石表达最深的感谢，让妈妈知道你有多爱她", countdown_prefix: "🔥 倒数：", countdown_end: "派对已结束", sec1_title: "【深层按摩】专属进度",
+        sec1_rule1: "任务 1. 直播间挑逗表演 / 玩具指令满万钻解锁 <span class='highlight-pink'>“金牌按摩师”</span> 成就徽章。",
+        sec1_rule2: "任务 2. 耗钻满 66666 钻享 <span class='highlight-pink'>“6666 钻石回馈”</span>。",
+        sec1_rule_note: "* 以上奖项将于耗钻达成 5 分钟自动派发。",
+        reward_badge_name: "金牌按摩师",
+        sec2_title: "【母亲节送礼大赏】说爱你排名赛",
+        sec2_rule1: "于直播间及聊天室赠送 <span class='highlight-pink'>“520说爱你”</span> 系列礼物，即可参与排名赛。",
+        sec2_rule2: "赠送指定系列礼物最多的前 50 名用户，即可解锁对应徽章。",
+        sec2_rule_note: "* 最终排名以活动结束时为准，徽章奖励将于 5 個工作天內发放。",
+        badge_preview_title: "尊荣徽章预览", badge_1_name: "国民好儿子", badge_2_name: "妈妈的乖宝贝", badge_3_name: "乖巧养子",
+        badge_1_desc: "母亲节送礼排行榜 第一名 获得", badge_2_desc: "母亲节送礼排行榜 第 2 ~ 10 名 获得", badge_3_desc: "母亲节送礼排行榜 第 11 ~ 50 名 获得",
+        update_notice: "※ 排行榜每 5 分钟更新一次", my_command: "我目前已消耗", expand_btn: "显示更多排名 ▾",
+        my_rank_label: "我的名次", unranked: "未入榜", not_participated: "尚未参与，快送出第一个礼物 🌸", modal_btn: "我知道了",
+        call_name: "地方妈妈 💋", call_sub: "行动电话", gift_btn: "送礼去",
+        disclaimer: "SWAG 保留随时修改、终止活动之权利。",
+        anonymous: "匿名用户"
+      },
+      "en": { 
+        title: "Local Mom's Midnight Party", subtitle: "Express your gratitude with diamonds, let mom know you love her", countdown_prefix: "🔥 Ends in: ", countdown_end: "Party is over", sec1_title: "[Deep Massage] Progress",
+        sec1_rule1: "Task 1. Spend 10k+ dias on toys/shows to unlock <span class='highlight-pink'>'Golden Masseur'</span> badge.",
+        sec1_rule2: "Task 2. Spend 66,666 dias to get <span class='highlight-pink'>'6,666 Diamonds Rebate'</span>.",
+        sec1_rule_note: "* Rewards will be sent automatically 5 mins after requirement is met.",
+        reward_badge_name: "Golden Masseur",
+        sec2_title: "[Mother's Day] Gift Ranking",
+        sec2_rule1: "Send <span class='highlight-pink'>'Love you'</span> series gifts in live/chat to join the ranking.",
+        sec2_rule2: "Top 50 users sending the most specified gifts unlock exclusive badges.",
+        sec2_rule_note: "* Final ranking based on event end time. Badges issued within 5 working days.",
+        badge_preview_title: "Exclusive Badges Preview", badge_1_name: "Best Son", badge_2_name: "Sweet Baby", badge_3_name: "Good Child",
+        badge_1_desc: "Awarded to Rank 1 in Mother's Day Gifting", badge_2_desc: "Awarded to Rank 2~10 in Mother's Day Gifting", badge_3_desc: "Awarded to Rank 11~50 in Mother's Day Gifting",
+        update_notice: "※ Updates every 5 mins", my_command: "My current spend", expand_btn: "Show More ▾",
+        my_rank_label: "My Rank", unranked: "Unranked", not_participated: "Not participated yet, send your first gift! 🌸", modal_btn: "Got it",
+        call_name: "Local Mom 💋", call_sub: "Mobile", gift_btn: "Send Gift",
+        disclaimer: "SWAG reserves the right to modify or terminate the activity at any time.",
+        anonymous: "Anonymous"
+      },
+      "ja": { 
+        title: "ママの深夜パーティー", subtitle: "ダイヤで最高の感謝を伝えよう。ママへの愛を形に", countdown_prefix: "🔥 終了まで：", countdown_end: "終了しました", sec1_title: "【ディープマッサージ】",
+        sec1_rule1: "任務1. 配信やチャットで1万ダイヤ消費し、<span class='highlight-pink'>「金賞マッサージ師」</span>バッジを解放。",
+        sec1_rule2: "任務2. 66,666ダイヤ消費で<span class='highlight-pink'>「6,666ダイヤ還元」</span>を獲得。",
+        sec1_rule_note: "* 条件達成後、約5分で自動的に配布されます。",
+        reward_badge_name: "金賞マッサージ師",
+        sec2_title: "【母の日】ギフトランキング",
+        sec2_rule1: "配信やチャットで<span class='highlight-pink'>「520ギフト」</span>シリーズを贈るとランキングに参加できます。",
+        sec2_rule2: "指定ギフトを最も多く贈った上位50名に限定バッジをプレゼント！",
+        sec2_rule_note: "* 最終順位はイベント終了時。バッジは5営業日以内に配布。",
+        badge_preview_title: "限定バッジプレビュー", badge_1_name: "国民の息子", badge_2_name: "ママのいい子", badge_3_name: "優しい養子",
+        badge_1_desc: "母の日ギフトランキング 第1位", badge_2_desc: "母の日ギフトランキング 第2~10位", badge_3_desc: "母の日ギフトランキング 第11~50位",
+        update_notice: "※ 5分ごとに更新されます", my_command: "現在の消費額", expand_btn: "もっと見る ▾",
+        my_rank_label: "自分の順位", unranked: "ランク外", not_participated: "まだ参加していません。最初のギフトを贈ろう！ 🌸", modal_btn: "OK",
+        call_name: "ご近所のママ 💋", call_sub: "携帯電話", gift_btn: "贈る",
+        disclaimer: "SWAGは、いつでもイベントを変更または終了する権利を留保します。",
+        anonymous: "匿名ユーザー"
+      }
+    };
+
+    const audioUrls = {
+      "zh-TW": "https://public.swag.live/notifications/custom/bear/momday/momday_chinese.mp3",
+      "zh-CN": "https://public.swag.live/notifications/custom/bear/momday/momday_chinese.mp3",
+      "en": "https://public.swag.live/notifications/custom/bear/momday/momday_english.mp3",
+      "ja": "https://public.swag.live/notifications/custom/bear/momday/momday_japanese.mp3"
+    };
+
+    let currentLang = 'zh-TW';
+    function changeLang(lang, btnElement) {
+      currentLang = lang;
+      
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+      
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if(i18n[lang] && i18n[lang][key]) {
+          el.innerHTML = i18n[lang][key];
+        }
+      });
+      
+      document.getElementById('prankAudio').src = audioUrls[lang];
+      
+      renderGifts();
+      if(window.myStatusData) renderStickyFooter(window.myStatusData);
+      if(window.fullLeaderboardData && document.getElementById('expandBtn').style.display === 'none') {
+        renderLeaderboard(window.fullLeaderboardData); 
+      } else if (window.fullLeaderboardData) {
+        renderLeaderboard(window.fullLeaderboardData.slice(0, 6));
+      }
+    }
+
+    const gifts = [
+      { ch: "心動520", en: "Heartbeat 520", dia: "1,999", img: "https://public.swag.live/products/livestream-love520-balloon.png" },
+      { ch: "給妳來一發", en: "Take my shot", dia: "9,999", img: "https://public.swag.live/products/livestream-love520-gun.png" },
+      { ch: "送妳大奶馨", en: "Carnations for you", dia: "19,999", img: "https://public.swag.live/products/livestream-love520-flower.png" },
+      { ch: "我讓妳當媽", en: "Make you a mom", dia: "24,999", img: "https://public.swag.live/products/love520-mom.png" },
+      { ch: "全部射給妳", en: "Shooting my shot", dia: "66,666", img: "https://public.swag.live/products/livestream-love520-cupid.png" }
+    ];
+
+    function renderGifts() {
+      const track = document.getElementById('giftTrack');
+      track.innerHTML = '';
+      const seamlessGifts = [...gifts, ...gifts];
+      const btnText = i18n[currentLang].gift_btn;
+      
+      seamlessGifts.forEach((gift) => {
+        const card = document.createElement('div');
+        card.className = 'gift-card';
+        card.innerHTML = `
+          <img src="${gift.img}" alt="${gift.ch}">
+          <div class="gift-name-ch">${gift.ch}</div>
+          <div class="gift-name-en">${gift.en}</div>
+          <div class="gift-price">${gift.dia} 💎</div>
+          <div class="gift-overlay"><a href="https://swag.live/livestream" target="_blank" class="cta-btn">${btnText}</a></div>
+        `;
+        card.addEventListener('click', (e) => {
+          if(e.target.tagName.toLowerCase() === 'a') return;
+          const isShowing = card.classList.contains('show-mask');
+          document.querySelectorAll('.gift-card').forEach(c => c.classList.remove('show-mask'));
+          if (!isShowing) card.classList.add('show-mask');
+        });
+        track.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { renderGifts(); });
+
+    function openBadgeModal(tier) {
+      const dict = i18n[currentLang];
+      let title, desc, iconUrl;
+      
+      if (tier === 1) {
+        title = '👑 ' + dict.badge_1_name; desc = dict.badge_1_desc; iconUrl = 'https://public.swag.live/badges/campaign_goodson.svg';
+      } else if (tier === 2) {
+        title = '✨ ' + dict.badge_2_name; desc = dict.badge_2_desc; iconUrl = 'https://public.swag.live/badges/campaign_goodbaby.svg';
+      } else {
+        title = '💕 ' + dict.badge_3_name; desc = dict.badge_3_desc; iconUrl = 'https://public.swag.live/badges/campaign_adoptedson.svg';
+      }
+      openModal(title, desc, iconUrl);
+    }
+
+    function openModal(title, desc, iconUrl) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDesc').textContent = desc;
+      const iconEl = document.getElementById('modalIcon');
+      if (iconUrl) {
+        iconEl.src = iconUrl;
+        iconEl.style.display = 'block';
+      } else {
+        iconEl.style.display = 'none';
+      }
+      document.getElementById('badgeModal').classList.add('show');
+    }
+    function closeModal() { document.getElementById('badgeModal').classList.remove('show'); }
+
+    function maskUsername(name) {
+      if (!name) return i18n[currentLang].anonymous;
+      let arr = name.split('');
+      for (let i = 2; i < 5 && i < arr.length; i++) { arr[i] = '*'; }
+      return arr.join('');
+    }
+
+    const endTime = new Date("2026-05-10T23:59:59+08:00").getTime();
+    let lastSecond = -1;
+    setInterval(() => {
+      const now = new Date().getTime();
+      const dist = endTime - now;
+      const cBox = document.getElementById("countdown");
+      const cContainer = document.getElementById("countdown-container");
+      
+      if (dist < 0) {
+        cBox.textContent = i18n[currentLang].countdown_end || "活動已結束";
+        cContainer.classList.remove('tick-flash');
+        return;
+      }
+      
+      const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+      const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((dist % (1000 * 60)) / 1000);
+      
+      let prefix = i18n[currentLang].countdown_prefix || "🔥 倒數：";
+      cBox.textContent = `${prefix}${d}天 ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+      
+      if (s !== lastSecond) {
+        cContainer.classList.remove('tick-flash');
+        void cContainer.offsetWidth; 
+        cContainer.classList.add('tick-flash');
+        lastSecond = s;
+      }
+    }, 1000);
+
+    const isDevMode = (window.self === window.top);
+    let token = null;
+    let apiUrlPrefix = "https://momday-campaign-bff-905468082258.asia-east1.run.app";
+    let retryInterval = null;
+
+    function sendReady() { window.parent.postMessage({ type: 'IFRAME_READY' }, '*'); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStickyFooter({ command_diamond_cost: 0, gift_diamond_cost: 0, rank: 0 });
+      if (isDevMode) {
+        setTimeout(() => loadMockData(), 1500);
+      } else {
+        setTimeout(sendReady, 100);
+        retryInterval = setInterval(() => { if (!token) sendReady(); }, 3000);
+      }
+    });
+
+    window.addEventListener('message', (event) => {
+      const { type, apiUrlPrefix: pfx, token: receivedToken } = event.data || {};
+      if (type === 'SET_DOMAIN_CONFIG' && pfx) apiUrlPrefix = pfx;
+      if (type === 'SET_TOKEN' && receivedToken && receivedToken !== token) {
+        token = receivedToken; clearInterval(retryInterval); fetchActivityData();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[target="_blank"]');
+      if (!link || isDevMode) return;
+      const url = new URL(link.href);
+      if (['swag.live', 'www.swag.live'].includes(url.hostname)) {
+        e.preventDefault();
+        window.parent.postMessage({ type: 'PWA_NAVIGATE', url: link.href }, '*');
+      }
+    });
+
+    async function fetchActivityData() {
+      try {
+        const res = await fetch(`${apiUrlPrefix}/leaderboard`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        renderPage(data);
+      } catch (err) {
+        console.error("Fetch Error:", err);
+        if(err.message === "403") alert("您不符合活動資格");
+      }
+    }
+
+    function renderPage(data) {
+      window.fullLeaderboardData = (data.leaderboard || []).filter(user => user.gift_diamond_cost > 0);
+      window.myStatusData = data.my_status || { command_diamond_cost: 0, gift_diamond_cost: 0, rank: 0, display_name: "", level: 0 };
+      
+      const cost = window.myStatusData.command_diamond_cost;
+      document.getElementById('myCommandScore').textContent = cost.toLocaleString();
+      document.getElementById('myCommandScore').classList.remove('skeleton');
+      let pct = (cost / 66666) * 100; if(pct > 100) pct = 100;
+      
+      setTimeout(() => {
+        document.getElementById('progressBar').style.width = `${pct}%`;
+        if (cost >= 10000) {
+          const badge = document.getElementById('reward-badge');
+          badge.classList.add('active');
+          badge.querySelector('.reward-img').style.filter = "none";
+        }
+        if (cost >= 66666) document.getElementById('reward-diamond').classList.add('active');
+      }, 500);
+      
+      renderStickyFooter(window.myStatusData);
+      renderLeaderboard(window.fullLeaderboardData.slice(0, 6));
+      
+      if(window.fullLeaderboardData.length > 6) { document.getElementById('expandBtn').style.display = 'block'; }
+      else { document.getElementById('expandBtn').style.display = 'none'; }
+    }
+
+    function renderStickyFooter(myStatus) {
+      const footer = document.getElementById('stickyFooter');
+      const giftCost = myStatus.gift_diamond_cost || 0;
+      const dict = i18n[currentLang];
+      
+      if (giftCost > 0) {
+        const vipHtml = (myStatus.level && myStatus.level > 0) ? `<span class="vip-tag">VIP ${myStatus.level}</span>` : '';
+        const rankStr = myStatus.rank > 0 ? myStatus.rank : dict.unranked;
+        const displayName = myStatus.display_name ? myStatus.display_name : dict.anonymous;
+        footer.innerHTML = `<div class="sticky-left"><div class="my-rank-label">${dict.my_rank_label} <span class="my-rank-num">${rankStr}</span></div><div class="my-user-info"><span class="sticky-name">${displayName}</span>${vipHtml}</div></div><div class="sticky-score">💎 ${giftCost.toLocaleString()}</div>`;
+      } else { 
+        footer.innerHTML = `<div class="sticky-left"><div class="my-rank-label">${dict.my_rank_label} <span class="my-rank-num">－</span></div></div><div class="empty-state-text">${dict.not_participated}</div>`; 
+      }
+    }
+
+    window.expandLeaderboard = function() {
+      document.getElementById('expandBtn').style.display = 'none';
+      renderLeaderboard(window.fullLeaderboardData);
+    };
+
+    function renderLeaderboard(list) {
+      const container = document.getElementById('leaderboardList');
+      container.innerHTML = '';
+      if (list.length === 0) { container.innerHTML = `<div style="text-align:center; color:var(--color-on-primary-3); padding: var(--spacing-4);">尚無數據</div>`; return; }
+      
+      list.forEach((user, index) => {
+        const safeName = maskUsername(user.display_name);
+        const vipHtml = (user.level && user.level > 0) ? `<span class="vip-tag">VIP ${user.level}</span>` : '';
+        const item = document.createElement('div');
+        item.className = `lb-item rank-${user.rank} ${user.is_me ? 'is-me' : ''}`;
+        item.style.animationDelay = `${(index % 6) * 0.05}s`;
+        item.innerHTML = `<div class="lb-rank">${user.rank}</div><div class="lb-info-row"><div class="lb-name">${safeName}</div>${vipHtml}${user.is_me ? `<span style="font-size:10px;color:var(--color-primary);">(我)</span>` : ''}</div><div class="lb-score">${user.gift_diamond_cost.toLocaleString()} 💎</div>`;
+        container.appendChild(item);
+      });
+    }
+
+    function loadMockData() {
+      renderPage({
+        my_status: { command_diamond_cost: 15400, gift_diamond_cost: 0, rank: 0, display_name: "", level: 6, is_me: true },
+        leaderboard: [
+          { user_id: "u1", rank: 1, display_name: "dylanboon", gift_diamond_cost: 120500, level: 36, is_me: false },
+          { user_id: "u2", rank: 2, display_name: "深夜課金王", gift_diamond_cost: 89000, level: 25, is_me: false },
+          { user_id: "u3", rank: 3, display_name: "媽媽愛你", gift_diamond_cost: 45000, level: 12, is_me: false },
+          { user_id: "u4", rank: 4, display_name: "", gift_diamond_cost: 32000, level: 0, is_me: false },
+          { user_id: "u5", rank: 5, display_name: "霸氣總裁", gift_diamond_cost: 28000, level: 40, is_me: false },
+          { user_id: "u6", rank: 6, display_name: "路人甲", gift_diamond_cost: 15000, level: 3, is_me: false },
+          { user_id: "u8", rank: 7, display_name: "潛水鄉民", gift_diamond_cost: 0, level: 0, is_me: false }
+        ]
+      });
+    }
+  </script>
+</body>
+</html>
